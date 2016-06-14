@@ -10,7 +10,7 @@ namespace FirstGitDemo
         static void Main(string[] args)
         {
 
-
+            var dd=5;
         }
     }
 }
