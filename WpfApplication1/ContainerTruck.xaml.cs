@@ -1,0 +1,45 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Windows;
+using System.Windows.Controls;
+using System.Windows.Data;
+using System.Windows.Documents;
+using System.Windows.Input;
+using System.Windows.Media;
+using System.Windows.Media.Imaging;
+using System.Windows.Navigation;
+using System.Windows.Shapes;
+
+namespace WpfApplication1
+{
+    /// <summary>
+    /// ContainerTruck.xaml 的交互逻辑
+    /// </summary>
+    public partial class ContainerTruck : UserControl
+    {
+        public bool IsHaveBox
+        {
+            get
+            {
+                if (containerBox.Visibility == Visibility.Visible)
+                    return true;
+                else
+                    return false;
+            }
+            set
+            {
+                if (value)
+                    containerBox.Visibility = Visibility.Visible;
+                else
+                    containerBox.Visibility = Visibility.Collapsed;
+            }
+        }
+
+        public ContainerTruck()
+        {
+            InitializeComponent();
+        }
+    }
+}
