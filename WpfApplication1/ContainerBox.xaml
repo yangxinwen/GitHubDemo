@@ -8,8 +8,17 @@
              >
     <!--集装箱-->
     <Grid>
-        <Border Background="#D0231F"  BorderBrush="#865B55" BorderThickness="0" x:Name="border">
-            <TextBlock Text="box" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txt"/>
+        <Border   BorderBrush="#865B55" BorderThickness="0" x:Name="border1" Visibility="Visible">
+            <Border.Background>
+                <ImageBrush ImageSource="d:/1.png"/>
+            </Border.Background>
+            <TextBlock Text="" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txt"/>
+        </Border>
+        <Border    BorderBrush="#865B55" BorderThickness="0" x:Name="border2" Visibility="Collapsed">
+            <!--<TextBlock Text="box" HorizontalAlignment="Center" VerticalAlignment="Center" />-->
+        </Border>
+        <Border   BorderBrush="#865B55" BorderThickness="0" x:Name="border3" Visibility="Collapsed">
+            <Path  Data="M50,25 L25,50 M25,25 50,50" Fill="#9594B9" Stretch="Fill" Stroke="#9594B9" StrokeThickness="2" HorizontalAlignment="Right"/>
         </Border>
     </Grid>
 </UserControl>

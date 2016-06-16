@@ -21,9 +21,10 @@
         </Grid.ColumnDefinitions>
 
 
-        <Grid Grid.ColumnSpan="5">
+        <Grid Grid.ColumnSpan="5" x:Name="gridDevice">
             <Border Height="10" Background="#BF0000" Margin="0,0,0,0" VerticalAlignment="Bottom"/>
-            <Border Background="#BF0000" Height="20" Width="40" Margin="100,0,0,-8" HorizontalAlignment="Left">
+            <Border x:Name="minCart"
+                Background="#BF0000" Height="30" Width="50" Margin="100,0,0,-15"  HorizontalAlignment="Left">
                 <TextBlock Text="R001" VerticalAlignment="Center" HorizontalAlignment="Center"/>
             </Border>
         </Grid>

@@ -5,10 +5,9 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WpfApplication1"
         mc:Ignorable="d"
-        Title="MainWindow" Height="350" Width="525">
+        Title="MainWindow" Height="500" Width="500">
     <Grid >
-        <!--<local:ContainerTruck x:Name="ct"/>-->
-        <local:BayView x:Name="bayView"/>
+        <local:BayViewCanvas x:Name="bayView"/>
         <Button Click="Button_Click" Height="20" Width="50" />
     </Grid>
 </Window>

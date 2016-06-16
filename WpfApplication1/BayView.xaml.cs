@@ -8,6 +8,7 @@ using System.Windows.Data;
 using System.Windows.Documents;
 using System.Windows.Input;
 using System.Windows.Media;
+using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
@@ -38,18 +39,19 @@ namespace WpfApplication1
         private void InitBox()
         {
             gridBoxArea.Children.Clear();
-            int colCount = 5, rowCount = 5; //列\层
+            listBorder.Clear();
+            int colCount = 6, rowCount = 7; //列\层
             this.colCount = colCount;
             this.rowCount = rowCount;
             //列是否从左到右
-            bool leftToRight = false;
+            bool leftToRight = true;
             this.leftToRight = leftToRight;
-            var arry = new int[colCount, rowCount];  //1-有箱  2-无箱  3-不能放箱
+            var arry = new int[rowCount, colCount];  //1-有箱  2-无箱  3-不能放箱
 
             //设置初始数据和表格
-            for (int i = 0; i < colCount; i++)
+            for (int i = 0; i < rowCount; i++)
             {
-                for (int j = 0; j < rowCount; j++)
+                for (int j = 0; j < colCount; j++)
                 {
                     arry[i, j] = 1;
                 }
@@ -75,7 +77,6 @@ namespace WpfApplication1
             //初始化箱控件
             for (int row = 0; row < rowCount + 1; row++)
             {
-                listBorder.Add(new List<ContainerBox>());
                 for (int col = 0; col < colCount + 2; col++)
                 {
                     ContainerBox box = new ContainerBox();
@@ -105,9 +106,11 @@ namespace WpfApplication1
                     }
                     else
                     {
-                        box.Flag = true;
-                        box.Text = row + "," + col;
-                        listBorder[row].Add(box);
+                        //box.Flag = true;
+                        //box.Text = row + "," + col;
+                        if (listBorder.Count <= row)
+                            listBorder.Add(new List<ContainerBox>());
+                        listBorder[row - 1].Add(box);
                     }
 
 
@@ -116,10 +119,53 @@ namespace WpfApplication1
                 }
             }
             gridBoxArea.Children.Add(grid);
+
+            SetBoxStatus(arry);
         }
 
 
-      
+        private void SetBoxStatus(int[,] boxs)
+        {
+            //不能放置
+            boxs[6, 5] = 3;
+            boxs[6, 4] = 3;
+            boxs[6, 3] = 3;
+            boxs[6, 2] = 3;
+            boxs[6, 1] = 3;
+            boxs[6, 0] = 3;
+            boxs[5, 5] = 3;
+            boxs[5, 4] = 3;
+            boxs[4, 5] = 3;
+
+            //空箱区
+            boxs[5, 3] = 2;
+            boxs[5, 2] = 2;
+            boxs[5, 1] = 2;
+            boxs[5, 0] = 2;
+            boxs[4, 4] = 2;
+            boxs[4, 3] = 2;
+            boxs[4, 2] = 2;
+            boxs[3, 5] = 2;
+            boxs[3, 4] = 2;
+            boxs[3, 2] = 2;
+            boxs[2, 5] = 2;
+            boxs[2, 4] = 2;
+            boxs[1, 5] = 2;
+            boxs[1, 4] = 2;
+            boxs[0, 5] = 2;
+
+
+            for (int row = 0; row < rowCount; row++)
+            {
+                for (int col = 0; col < colCount; col++)
+                {
+                    var keyValue = ConvertToAdvanPoint(row, col);
+                    listBorder[keyValue.Key][keyValue.Value].BoxStatus = boxs[row, col];
+                }
+            }
+
+        }
+
 
 
         /// <summary>
@@ -131,12 +177,14 @@ namespace WpfApplication1
         private KeyValuePair<int, int> ConvertToViewPoint(int x, int y)
         {
             int x1, y1;
-            x1 = this.rowCount - x - 1;
+            x1 = this.rowCount - x;
 
             if (leftToRight)
-                y1 = this.colCount - y - 1;
+                y1 = this.colCount - y;
             else
                 y1 = this.colCount;
+            x1--;
+            y1--;
             return new KeyValuePair<int, int>(x1, y1);
         }
         /// <summary>
@@ -148,18 +196,34 @@ namespace WpfApplication1
         private KeyValuePair<int, int> ConvertToAdvanPoint(int row, int col)
         {
             int x, y;
-            x = this.rowCount - row - 1;
+            x = this.rowCount-1 - row;
 
             if (leftToRight)
-                y = this.colCount - col - 1;
+                y = col;
             else
-                y = this.colCount;
+                y = this.colCount-1 - col;
+            
             return new KeyValuePair<int, int>(x, y);
         }
 
         public void Refresh()
         {
-            InitBox();
+
+
+
+
+            //ThicknessAnimation ta = new ThicknessAnimation();
+            //ta.From = minCart.Margin;             //起始值
+            //ta.To = new Thickness(gridDevice.ActualWidth-100, minCart.Margin.Top, minCart.Margin.Right, minCart.Margin.Bottom);        //结束值
+            //ta.Duration = TimeSpan.FromSeconds(3);         //动画持续时间
+            //this.minCart.BeginAnimation(TextBlock.MarginProperty, ta);//开始动画
+
+
+            //InitBox();
+            //var keyValue = ConvertToAdvanPoint(4, 0);
+            //listBorder[keyValue.Key][keyValue.Value].BoxStatus = 3;
+
+            return;
         }
     }
 }

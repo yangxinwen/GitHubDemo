@@ -19,6 +19,31 @@ namespace WpfApplication1
     /// </summary>
     public partial class ContainerTruck : UserControl
     {
+        public double X
+        {
+            get
+            {
+                return (double)this.GetValue(Canvas.LeftProperty);
+            }
+            set
+            {
+                SetValue(Canvas.LeftProperty, value);
+            }
+
+        }
+        public double Y
+        {
+            get
+            {
+                return (double)this.GetValue(Canvas.TopProperty);
+            }
+            set
+            {
+                SetValue(Canvas.TopProperty, value);
+            }
+        }
+
+
         public bool IsHaveBox
         {
             get
