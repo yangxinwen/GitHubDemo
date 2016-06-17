@@ -13,7 +13,7 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WpfApplication1
+namespace WPFDemo
 {
     /// <summary>
     /// BayView.xaml 的交互逻辑

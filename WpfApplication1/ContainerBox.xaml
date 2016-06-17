@@ -1,9 +1,9 @@
-﻿<UserControl x:Class="WpfApplication1.ContainerBox"
+﻿<UserControl x:Class="WPFDemo.ContainerBox"
              xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
              xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
              xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
              xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
-             xmlns:local="clr-namespace:WpfApplication1"
+             xmlns:local="clr-namespace:WPFDemo"
              mc:Ignorable="d" 
              >
     <!--集装箱-->
