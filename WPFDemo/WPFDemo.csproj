@@ -78,10 +78,6 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
-    <Page Include="BayView.xaml">
-      <SubType>Designer</SubType>
-      <Generator>MSBuild:Compile</Generator>
-    </Page>
     <Page Include="ContainerBox.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -100,9 +96,6 @@
     </Compile>
     <Compile Include="BayViewCanvas.xaml.cs">
       <DependentUpon>BayViewCanvas.xaml</DependentUpon>
-    </Compile>
-    <Compile Include="BayView.xaml.cs">
-      <DependentUpon>BayView.xaml</DependentUpon>
     </Compile>
     <Compile Include="ContainerBox.xaml.cs">
       <DependentUpon>ContainerBox.xaml</DependentUpon>
