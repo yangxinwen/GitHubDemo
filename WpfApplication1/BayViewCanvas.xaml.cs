@@ -214,23 +214,9 @@ namespace WpfApplication1
         {
 
             var keyValue = ConvertToAdvanPoint(4, 0);
-            var box = listBorder[keyValue.Key][keyValue.Value];
-            //box.BoxStatus = 1;
-            //var x = (double)box.GetValue(Canvas.LeftProperty);
-            //MoveMinCart(x);
-
-            //Thread.Sleep(3 * 1000);
-
-            //ta = new ThicknessAnimation();
-            //ta.From = minCart.Margin;             //起始值
-            //ta.To = new Thickness((double)ct1.GetValue(Canvas.LeftProperty), minCart.Margin.Top, minCart.Margin.Right, minCart.Margin.Bottom);        //结束值
-            //ta.Duration = TimeSpan.FromSeconds(3);         //动画持续时间
-            //this.minCart.BeginAnimation(Border.MarginProperty, ta);//开始动画
-
-            //InitBox();
-
-
-            if (false)
+            var box = listBorder[keyValue.Key][keyValue.Value];     
+            
+            if (true)
             {
                 //抓箱，放箱
                 MoveBoxOut(box, 50, 50);
