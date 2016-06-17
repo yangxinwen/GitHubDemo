@@ -74,9 +74,19 @@
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </ApplicationDefinition>
+    <Compile Include="CheckButtonOnOff.xaml.cs">
+      <DependentUpon>CheckButtonOnOff.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="WorkTask.xaml.cs">
+      <DependentUpon>WorkTask.xaml</DependentUpon>
+    </Compile>
     <Page Include="BayViewCanvas.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
+    </Page>
+    <Page Include="CheckButtonOnOff.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ContainerBox.xaml">
       <Generator>MSBuild:Compile</Generator>
@@ -107,6 +117,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="WorkTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
   </ItemGroup>
   <ItemGroup>
     <Compile Include="Properties\AssemblyInfo.cs">

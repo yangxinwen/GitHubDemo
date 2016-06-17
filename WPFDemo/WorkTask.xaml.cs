@@ -12,23 +12,16 @@ using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
 
-namespace WPFDemo
+namespace WpfApplication1
 {
     /// <summary>
-    /// MainWindow.xaml 的交互逻辑
+    /// WorkTask.xaml 的交互逻辑
     /// </summary>
-    public partial class MainWindow : Window
+    public partial class WorkTask : UserControl
     {
-        public MainWindow()
+        public WorkTask()
         {
             InitializeComponent();
-        }
-
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //ct.IsHaveBox = !ct.IsHaveBox;
-
-            //bayView.Refresh();
         }
     }
 }
