@@ -80,6 +80,9 @@
     <Compile Include="WorkTask.xaml.cs">
       <DependentUpon>WorkTask.xaml</DependentUpon>
     </Compile>
+    <Compile Include="WorkTaskProgressBar.xaml.cs">
+      <DependentUpon>WorkTaskProgressBar.xaml</DependentUpon>
+    </Compile>
     <Page Include="BayViewCanvas.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -118,6 +121,10 @@
       <SubType>Code</SubType>
     </Compile>
     <Page Include="WorkTask.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="WorkTaskProgressBar.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

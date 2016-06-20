@@ -20,7 +20,7 @@ namespace WPFDemo
     /// </summary>
     public partial class CheckButtonOnOff : UserControl
     {
-        private bool isOn=true;
+        private bool isOn = true;
         public bool IsOn
         {
             get
@@ -37,6 +37,12 @@ namespace WPFDemo
         public CheckButtonOnOff()
         {
             InitializeComponent();
+            this.Loaded += CheckButtonOnOff_Loaded;
+        }
+
+        private void CheckButtonOnOff_Loaded(object sender, RoutedEventArgs e)
+        {
+            SetStatus(IsOn, 0);
         }
 
         private void Border_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
@@ -44,7 +50,7 @@ namespace WPFDemo
             IsOn = !IsOn;
         }
 
-        private void SetStatus(bool isOn)
+        private void SetStatus(bool isOn, double sec=0.2)
         {
             double startX, endX;
 
@@ -52,17 +58,18 @@ namespace WPFDemo
             {
                 startX = 0;
                 endX = 0;
-               
+
             }
             else
             {
-                startX = 1 - this.Width / 2+1;
-                endX = this.Width / 2;
+                startX = 1 - this.ActualWidth / 2 + 1;
+                endX = this.ActualWidth / 2;
             }
             ThicknessAnimation ta = new ThicknessAnimation();
             ta.From = border1.Margin;             //起始值
             ta.To = new Thickness(startX, border1.Margin.Top, endX, border1.Margin.Bottom);        //结束值
-            ta.Duration = TimeSpan.FromSeconds(0.5);         //动画持续时间
+
+            ta.Duration = TimeSpan.FromSeconds(sec);         //动画持续时间
             this.border1.BeginAnimation(Border.MarginProperty, ta);//开始动画
         }
     }

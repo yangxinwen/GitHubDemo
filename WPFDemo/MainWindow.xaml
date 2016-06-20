@@ -5,11 +5,12 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
         xmlns:local="clr-namespace:WPFDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="500" Width="500">
-    <Grid >
+        Title="MainWindow" Height="200" Width="500">
+    <Grid x:Name="grid">
         <!--<local:BayViewCanvas x:Name="bayView"/>-->
        
-        <local:CheckButtonOnOff  Height="20" Width="50" Margin="0" IsOn="False" />
+        <!--<local:CheckButtonOnOff   Margin="0" IsOn="False" />-->
         <!--<Button Click="Button_Click" Height="20" Width="50" />-->
+        <local:WorkTaskProgressBar  Height="50" Width="300" ProgressValue="1"/>
     </Grid>
 </Window>
