@@ -3,14 +3,16 @@
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
+             xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
         xmlns:local="clr-namespace:WPFDemo"
         mc:Ignorable="d"
         Title="MainWindow" Height="200" Width="500">
     <Grid x:Name="grid">
         <!--<local:BayViewCanvas x:Name="bayView"/>-->
-       
-        <!--<local:CheckButtonOnOff   Margin="0" IsOn="False" />-->
-        <!--<Button Click="Button_Click" Height="20" Width="50" />-->
-        <local:WorkTaskProgressBar  Height="50" Width="300" ProgressValue="1"/>
+        <local:UCGridControl x:Name="gc">
+            <dxg:GridControl.Columns>
+                <dxg:GridColumn FieldName="Name" Header="Name"/>
+            </dxg:GridControl.Columns>
+        </local:UCGridControl>
     </Grid>
 </Window>

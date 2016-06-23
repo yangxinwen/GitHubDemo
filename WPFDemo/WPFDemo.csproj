@@ -50,7 +50,9 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="DevExpress.Data.v15.2, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
-    <Reference Include="DevExpress.Mvvm.v15.2, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
+    <Reference Include="DevExpress.Mvvm.v15.2, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a">
+      <Private>True</Private>
+    </Reference>
     <Reference Include="DevExpress.Printing.v15.2.Core, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Xpf.Core.v15.2, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="DevExpress.Xpf.Grid.v15.2, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
@@ -76,6 +78,9 @@
     </ApplicationDefinition>
     <Compile Include="CheckButtonOnOff.xaml.cs">
       <DependentUpon>CheckButtonOnOff.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCGridControl.xaml.cs">
+      <DependentUpon>UCGridControl.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkTask.xaml.cs">
       <DependentUpon>WorkTask.xaml</DependentUpon>
@@ -120,6 +125,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="UCGridControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="WorkTask.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>

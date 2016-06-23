@@ -22,6 +22,15 @@ namespace WPFDemo
         public MainWindow()
         {
             InitializeComponent();
+
+            var list = new List<object>();
+            for (int i = 0; i < 100; i++)
+            {
+                list.Add(new { Name="test"+(i+1)});
+            }
+            gc.ItemsSource = list;
+            gc.ShowOrderNum = Visibility.Visible;
+
         }
 
         private void Button_Click(object sender, RoutedEventArgs e)
