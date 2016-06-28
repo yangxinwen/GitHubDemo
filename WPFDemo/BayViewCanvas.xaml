@@ -6,6 +6,15 @@
              xmlns:local="clr-namespace:WPFDemo"
              mc:Ignorable="d" 
              >
+    <UserControl.ContextMenu>
+        <ContextMenu>
+            <MenuItem Header="箱到车" Click="MenuItem_Click"/>
+            <MenuItem Header="车到箱" Click="MenuItem_Click_1"/>
+            <MenuItem Header="箱到箱" Click="MenuItem_Click_2"/>
+
+        </ContextMenu>
+    </UserControl.ContextMenu>
+
     <!--贝视图-->
     <Canvas x:Name="rootCanvas" Height="300" Width="400">
         <Border Height="10" Width="400" Background="#BF0000" VerticalAlignment="Bottom" Canvas.Top="5"/>

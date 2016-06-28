@@ -442,6 +442,24 @@ namespace WPFDemo
             });
         }
 
+
+
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            Test1();
+        }
+
+        private void MenuItem_Click_1(object sender, RoutedEventArgs e)
+        {
+            Test2();
+        }
+
+        private void MenuItem_Click_2(object sender, RoutedEventArgs e)
+        {
+            Test3();
+        }
+
     }
 
 
