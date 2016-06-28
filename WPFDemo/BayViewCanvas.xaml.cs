@@ -15,6 +15,7 @@ using System.Windows.Media.Animation;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using System.IO;
 
 namespace WPFDemo
 {
@@ -23,6 +24,11 @@ namespace WPFDemo
     /// </summary>
     public partial class BayViewCanvas : UserControl
     {
+        /// <summary>
+        /// 保存箱区所有箱的上一次的状态
+        /// </summary>
+        private int[,] lastBoxs;
+
         /// <summary>
         /// 最大箱区
         /// </summary>
@@ -37,31 +43,42 @@ namespace WPFDemo
         private int rowCount = 5;
         private bool leftToRight = true;
         private List<List<ContainerBox>> listBorder = new List<List<ContainerBox>>();
+        /// <summary>
+        /// 移动中的箱(一直存在，没有的时候状态是2，显示的时候状态是1)
+        /// </summary>
+        private ContainerBox movingBox = null;
         public BayViewCanvas()
         {
             InitializeComponent();
-            InitBox();
+            var model = new BayViewModel();
+            model.HaveLeftCart = true;
+            model.Boxs = GetInitBoxData();
+            UpdateUI(model);
+            this.MouseMove += BayViewCanvas_MouseMove;
         }
 
-        private void InitBox()
+        private void BayViewCanvas_MouseMove(object sender, MouseEventArgs e)
         {
-            listBorder.Clear();
-            int colCount = 6, rowCount = 7; //列\层
-            this.colCount = colCount;
-            this.rowCount = rowCount;
-            //列是否从左到右
-            bool leftToRight = false;
-            this.leftToRight = leftToRight;
-            var arry = new int[rowCount, colCount];  //1-有箱  2-无箱  3-不能放箱
+            var point = new Point();
+            point = e.GetPosition(rootCanvas);
+            Debug.WriteLine(point);
+        }
 
-            //设置初始数据和表格
-            for (int i = 0; i < rowCount; i++)
+        /// <summary>
+        /// 更新箱区UI
+        /// </summary>
+        private void UpdateBoxAreaUI(int[,] boxs)
+        {
+
+            foreach (var item1 in listBorder)
             {
-                for (int j = 0; j < colCount; j++)
+                foreach (var item2 in item1)
                 {
-                    arry[i, j] = 1;
+                    rootCanvas.Children.Remove(item2);
                 }
             }
+            listBorder.Clear();
+
 
             var startPoint = new Point(100, 100);
             //得出箱在界面上的长宽
@@ -76,7 +93,7 @@ namespace WPFDemo
                 startPoint.X = (rootCanvas.Width - maxBoxAreaPoint.X) / 2;
                 startPoint.Y = rootCanvas.Height - maxBoxAreaPoint.Y;
 
-                if (startPoint.X <= (ct1.Margin.Left + ct1.Width) || startPoint.Y < (minCart.Margin.Top + minCart.Height + 50))
+                if (startPoint.X <= (leftCart.Margin.Left + leftCart.Width) || startPoint.Y < (minCart.Margin.Top + minCart.Height + 50))
                     width = height = width - 5;
                 else
                     break;
@@ -114,22 +131,100 @@ namespace WPFDemo
                     }
                     else
                     {
-                        //box.Flag = true;
-                        //box.Text = row + "," + col;
                         if (listBorder.Count <= row)
                             listBorder.Add(new List<ContainerBox>());
                         listBorder[row - 1].Add(box);
                     }
                     rootCanvas.Children.Add(box);
+
+                    //初始化一个移动中的箱
+                    if (movingBox == null)
+                    {
+                        var tmpBox = box.Clone();
+                        tmpBox.BoxStatus = 2;
+                        rootCanvas.Children.Add(tmpBox);
+                        movingBox = tmpBox;
+                    }
                 }
             }
 
-            SetBoxStatus(arry);
+            //更新箱状态
+            for (int row = 0; row < rowCount; row++)
+            {
+                for (int col = 0; col < colCount; col++)
+                {
+                    var keyValue = ConvertToAdvanPoint(row, col);
+                    listBorder[keyValue.Key][keyValue.Value].BoxStatus = boxs[row, col];
+                }
+            }
+
+            lastBoxs = boxs;
         }
 
 
-        private void SetBoxStatus(int[,] boxs)
+        /// <summary>
+        /// 贝位图坐标转换成标准坐标(起始坐标都是0开始)
+        /// </summary>
+        /// <param name="row"></param>
+        /// <param name="col"></param>
+        /// <returns></returns>
+        private KeyValuePair<int, int> ConvertToAdvanPoint(int row, int col)
         {
+            int x, y;
+            x = this.rowCount - 1 - row;
+
+            if (leftToRight)
+                y = col;
+            else
+                y = this.colCount - 1 - col;
+
+            return new KeyValuePair<int, int>(x, y);
+        }
+
+        private bool CompareBoxs(int[,] array1, int[,] array2)
+        {
+            if (array1 == null || array2 == null)
+                return false;
+
+            if (array1.GetUpperBound(0) != array2.GetUpperBound(0) ||
+                array1.GetUpperBound(1) != array2.GetUpperBound(1))
+                return false;
+
+            for (int i = 0; i <= array1.GetUpperBound(0); i++)
+            {
+                for (int j = 0; j <= array1.GetUpperBound(1); j++)
+                {
+                    if (array1[i, j] != array2[i, j])
+                        return false;
+                }
+            }
+
+            return true;
+        }
+
+        /// <summary>
+        /// 初始化测试数据-箱  
+        /// </summary>
+        private int[,] GetInitBoxData()
+        {
+            int colCount = 6, rowCount = 7; //列\层
+            this.colCount = colCount;
+            this.rowCount = rowCount;
+            //列是否从左到右
+            bool leftToRight = false;
+            this.leftToRight = leftToRight;
+            var array = new int[rowCount, colCount];  //1-有箱  2-无箱  3-不能放箱
+
+            //设置初始数据和表格
+            for (int i = 0; i < rowCount; i++)
+            {
+                for (int j = 0; j < colCount; j++)
+                {
+                    array[i, j] = 1;
+                }
+            }
+
+            var boxs = array;
             //不能放置
             boxs[6, 5] = 3;
             boxs[6, 4] = 3;
@@ -158,223 +253,229 @@ namespace WPFDemo
             boxs[1, 4] = 2;
             boxs[0, 5] = 2;
 
+            return array;
+        }
 
-            for (int row = 0; row < rowCount; row++)
+        private void UpdateUI(BayViewModel model)
+        {
+            //更新拖链小车位置
+            if (model.MinCartPoint != null && model.MinCartPoint.X != 0 && model.MinCartPoint.Y != 0)
             {
-                for (int col = 0; col < colCount; col++)
+                minCart.SetValue(Canvas.LeftProperty, model.MinCartPoint.X);
+                minCart.SetValue(Canvas.TopProperty, model.MinCartPoint.Y);
+            }
+            //更新箱区
+            if (!CompareBoxs(lastBoxs, model.Boxs))
+                UpdateBoxAreaUI(model.Boxs);
+
+            //更新移动箱的位置
+            if (model.MovingBoxPoint != null && model.MovingBoxPoint.X != 0 && model.MovingBoxPoint.Y != 0)
+            {
+                movingBox.SetValue(Canvas.LeftProperty, model.MovingBoxPoint.X);
+                movingBox.SetValue(Canvas.TopProperty, model.MovingBoxPoint.Y);
+                movingBox.BoxStatus = 1;
+            }
+            else
+                movingBox.BoxStatus = 2;
+
+            //更新集卡
+            leftCart.ContainerBoxHeight = movingBox.Height;
+            leftCart.ContainerBoxWidth = movingBox.Width;
+
+            rightCart.ContainerBoxHeight = movingBox.Height;
+            rightCart.ContainerBoxWidth = movingBox.Width;
+
+            if (model.HaveLeftCart)
+                leftCart.Visibility = Visibility.Visible;
+            else
+                leftCart.Visibility = Visibility.Collapsed;
+
+            if (model.HaveRightCart)
+                rightCart.Visibility = Visibility.Visible;
+            else
+                rightCart.Visibility = Visibility.Collapsed;
+
+        }
+
+        /// <summary>
+        /// 箱到左边集卡
+        /// </summary>
+        public void Test1()
+        {
+            var list = new List<BayViewModel>();
+            var model = new BayViewModel();
+            model.HaveLeftCart = true;
+            model.Boxs = lastBoxs;
+            list.Add(model);
+            BayViewModel tmp = new BayViewModel();
+            try
+            {
+                StreamReader sr = new StreamReader("2,2ToCartpoint.txt");
+                string str = string.Empty;
+                while (!sr.EndOfStream)
                 {
-                    var keyValue = ConvertToAdvanPoint(row, col);
-                    listBorder[keyValue.Key][keyValue.Value].BoxStatus = boxs[row, col];
+                    str = sr.ReadLine();
+                    if (str != null)
+                    {
+                        var split = str.Split(',');
+                        if (split != null && split.Length == 2)
+                        {
+                            tmp = model.Clone() as BayViewModel;
+                            tmp.MovingBoxPoint = new Point(double.Parse(split[0]), double.Parse(split[1]));
+                            tmp.MinCartPoint = new Point(tmp.MovingBoxPoint.X, (double)minCart.GetValue(Canvas.TopProperty));
+                            tmp.Boxs[2, 2] = 2;
+                            list.Add(tmp);
+                        }
+                    }
                 }
             }
-
-        }
-
-
-
-        /// <summary>
-        /// 标准坐标转换成贝位图坐标(起始坐标都是0开始)
-        /// </summary>
-        /// <param name="x"></param>
-        /// <param name="y"></param>
-        /// <returns></returns>
-        private KeyValuePair<int, int> ConvertToViewPoint(int x, int y)
-        {
-            int x1, y1;
-            x1 = this.rowCount - x;
-
-            if (leftToRight)
-                y1 = this.colCount - y;
-            else
-                y1 = this.colCount;
-            x1--;
-            y1--;
-            return new KeyValuePair<int, int>(x1, y1);
-        }
-        /// <summary>
-        /// 贝位图坐标转换成标准坐标(起始坐标都是0开始)
-        /// </summary>
-        /// <param name="row"></param>
-        /// <param name="col"></param>
-        /// <returns></returns>
-        private KeyValuePair<int, int> ConvertToAdvanPoint(int row, int col)
-        {
-            int x, y;
-            x = this.rowCount - 1 - row;
-
-            if (leftToRight)
-                y = col;
-            else
-                y = this.colCount - 1 - col;
-
-            return new KeyValuePair<int, int>(x, y);
-        }
-
-        public void Refresh()
-        {
-
-            var keyValue = ConvertToAdvanPoint(4, 0);
-            var box = listBorder[keyValue.Key][keyValue.Value];     
-            
-            if (true)
+            catch (Exception)
             {
-                //抓箱，放箱
-                MoveBoxOut(box, 50, 50);
-                var th = new Thread(new ThreadStart(
-                    new Action(() =>
-                    {
-                        while (true)
-                        {
-                            Thread.Sleep(1 * 1000);
-                            if (isMoveBoxCompleted)
-                            {
-                                this.Dispatcher.Invoke(new Action(() =>
-                                {
-                                    var keyValue1 = ConvertToAdvanPoint(3, 2);
-                                    var box1 = listBorder[keyValue1.Key][keyValue1.Value];
-                                    MoveBoxIn(operatingBox, box1);
-                                }));
-                                break;
-                            }
-                        }
 
-                    })
-                    ));
-
-                th.Start();
-            }
-            else if (false)
-            {
-                //抓箱到集卡
-                MoveBoxOut(box, 50, 50);
-                var th = new Thread(new ThreadStart(
-                    new Action(() =>
-                    {
-                        while (true)
-                        {
-                            Thread.Sleep(1 * 1000);
-                            if (isMoveBoxCompleted)
-                            {
-                                this.Dispatcher.Invoke(new Action(() =>
-                                {
-                                    var keyValue1 = ConvertToAdvanPoint(3, 2);
-                                    var box1 = listBorder[keyValue1.Key][keyValue1.Value];
-                                    MoveBoxInCt(operatingBox);
-                                }));
-                                break;
-                            }
-                        }
-
-                    })
-                    ));
-
-                th.Start();
-            }
-            else if (true)
-            {
-                //集卡到堆场
-                var newBox = box.Clone();
-                newBox.X = ct1.X;
-                newBox.Y = rootCanvas.Height - ct1.Height;
-                rootCanvas.Children.Add(newBox);
-                MoveBoxOut(newBox, 50, 50);
-
-                var th = new Thread(new ThreadStart(
-                    new Action(() =>
-                    {
-                        while (true)
-                        {
-                            Thread.Sleep(1 * 1000);
-                            if (isMoveBoxCompleted)
-                            {
-                                this.Dispatcher.Invoke(new Action(() =>
-                                {
-                                    var keyValue1 = ConvertToAdvanPoint(1, 4);
-                                    var box1 = listBorder[keyValue1.Key][keyValue1.Value];
-                                    MoveBoxIn(operatingBox, box1);
-                                }));
-                                break;
-                            }
-                        }
-
-                    })
-                    ));
-
-                th.Start();
             }
 
-            return;
-        }
-        /// <summary>
-        /// 移动小车到指定位置
-        /// </summary>
-        /// <param name="x"></param>
-        private void MoveMinCart(double x)
-        {
-            ThicknessAnimation ta = new ThicknessAnimation();
-            ta.From = minCart.Margin;             //起始值
-            ta.To = new Thickness(x, minCart.Margin.Top, minCart.Margin.Right, minCart.Margin.Bottom);        //结束值
-            ta.Duration = TimeSpan.FromSeconds(1);         //动画持续时间
-            this.minCart.BeginAnimation(Border.MarginProperty, ta);//开始动画
+            Task.Factory.StartNew(() =>
+            {
+                foreach (var item in list)
+                {
+                    Thread.Sleep(1 * 100);
+                    this.Dispatcher.Invoke(new Action(() => { UpdateUI(item); }), null);
+                }
+
+            });
         }
 
         /// <summary>
-        /// 正被操作的箱子
+        /// 左边集卡到箱
         /// </summary>
-        private ContainerBox operatingBox = null;
-        private void MoveBoxOut(ContainerBox box, int x, int y)
+        public void Test2()
         {
-            var newBox = box.Clone();
-            rootCanvas.Children.Add(newBox);
-            box.BoxStatus = 2;
-            MoveBox(newBox, x, y, null);
-            operatingBox = newBox;
-
-            Binding bind = new Binding();
-            bind.Path = new PropertyPath(Canvas.LeftProperty);
-            bind.Source = newBox;
-            minCart.SetBinding(Canvas.LeftProperty, bind);
-        }
-
-        private void MoveBoxIn(ContainerBox sourceBox, ContainerBox objBox)
-        {
-            MoveBox(sourceBox, objBox.X, objBox.Y, new Action(() =>
+            var list = new List<BayViewModel>();
+            var model = new BayViewModel();
+            model.HaveLeftCart = true;
+            model.Boxs = lastBoxs;
+            list.Add(model);
+            BayViewModel tmp = new BayViewModel();
+            try
             {
-                rootCanvas.Children.Remove(sourceBox);
-                objBox.BoxStatus = 1;
-            }));
-        }
-
-        private void MoveBoxInCt(ContainerBox sourceBox)
-        {
-            MoveBox(sourceBox, ct1.X, rootCanvas.Height - ct1.Height, new Action(() =>
-             {
-                 rootCanvas.Children.Remove(sourceBox);
-             }));
-        }
-        private bool isMoveBoxCompleted = true;
-        private void MoveBox(ContainerBox box, double x, double y, Action action)
-        {
-            DoubleAnimation da = new DoubleAnimation();
-            da.From = box.Y;
-            da.To = y;
-            da.Duration = TimeSpan.FromSeconds(1);
-            da.Completed += (s, e) =>
+                StreamReader sr = new StreamReader("CartTo2,2point.txt");
+                string str = string.Empty;
+                while (!sr.EndOfStream)
+                {
+                    str = sr.ReadLine();
+                    if (str != null)
+                    {
+                        var split = str.Split(',');
+                        if (split != null && split.Length == 2)
+                        {
+                            tmp = model.Clone() as BayViewModel;
+                            tmp.MovingBoxPoint = new Point(double.Parse(split[0]), double.Parse(split[1]));
+                            tmp.MinCartPoint = new Point(tmp.MovingBoxPoint.X, (double)minCart.GetValue(Canvas.TopProperty));
+                            //tmp.Boxs[2, 2] = 2;
+                            list.Add(tmp);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
             {
-                action?.Invoke();
-                isMoveBoxCompleted = true;
-            };
-            box.BeginAnimation(Canvas.TopProperty, da);
 
+            }
 
-            DoubleAnimation da1 = new DoubleAnimation();
-            da1.From = box.X;
-            da1.To = x;
-            da1.Duration = TimeSpan.FromSeconds(1);
-            da1.Completed += (s, e) => { action?.Invoke(); };
-            box.BeginAnimation(Canvas.LeftProperty, da1);
-            isMoveBoxCompleted = false;
+            Task.Factory.StartNew(() =>
+            {
+                foreach (var item in list)
+                {
+                    Thread.Sleep(1 * 100);
+                    this.Dispatcher.Invoke(new Action(() => { UpdateUI(item); }), null);
+                }
+
+            });
         }
 
+        /// <summary>
+        /// 箱到箱
+        /// </summary>
+        public void Test3()
+        {
+            var list = new List<BayViewModel>();
+            var model = new BayViewModel();
+            model.HaveLeftCart = true;
+            model.Boxs = lastBoxs;
+            list.Add(model);
+            BayViewModel tmp = new BayViewModel();
+            try
+            {
+                StreamReader sr = new StreamReader("4,1To1,4point.txt");
+                string str = string.Empty;
+                while (!sr.EndOfStream)
+                {
+                    str = sr.ReadLine();
+                    if (str != null)
+                    {
+                        var split = str.Split(',');
+                        if (split != null && split.Length == 2)
+                        {
+                            tmp = model.Clone() as BayViewModel;
+                            tmp.MovingBoxPoint = new Point(double.Parse(split[0]), double.Parse(split[1]));
+                            tmp.MinCartPoint = new Point(tmp.MovingBoxPoint.X, (double)minCart.GetValue(Canvas.TopProperty));
+                            tmp.Boxs[4, 1] = 2;
+                            list.Add(tmp);
+                        }
+                    }
+                }
+            }
+            catch (Exception)
+            {
+
+            }
+           
+
+            Task.Factory.StartNew(() =>
+            {
+                foreach (var item in list)
+                {
+                    Thread.Sleep(1 * 100);
+                    this.Dispatcher.Invoke(new Action(() => { UpdateUI(item); }), null);
+                }
+
+            });
+        }
+
+    }
+
+
+
+    /// <summary>
+    /// 贝位视图model
+    /// </summary>
+    public class BayViewModel : ICloneable
+    {
+        /// <summary>
+        /// 存在左边集卡
+        /// </summary>
+        public bool HaveLeftCart { get; set; }
+        /// <summary>
+        /// 存在右边集卡
+        /// </summary>
+        public bool HaveRightCart { get; set; }
+
+        /// <summary>
+        /// 拖链小车位置
+        /// </summary>
+        public Point MinCartPoint { get; set; }
+        /// <summary>
+        /// 正在被移动箱的(空中箱)位置（null 或者 0,0 代表没有箱被移动或被悬吊）
+        /// </summary>
+        public Point MovingBoxPoint { get; set; }
+
+        public int[,] Boxs { get; set; }
+
+        public object Clone()
+        {
+            var obj = this.MemberwiseClone() as BayViewModel;
+            obj.Boxs = Boxs.Clone() as int[,];
+            return obj;
+        }
     }
 }

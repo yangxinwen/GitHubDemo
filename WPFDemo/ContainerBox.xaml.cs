@@ -78,7 +78,7 @@ namespace WPFDemo
         private int boxStatus = 1; //1-有箱  2-空箱  3-不可用
 
         /// <summary>
-        /// 获取或设置箱状态
+        /// 获取或设置箱状态 //1-有箱  2-空箱  3-不可用
         /// </summary>
         public int BoxStatus
         {

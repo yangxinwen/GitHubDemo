@@ -23,13 +23,13 @@ namespace WPFDemo
         {
             InitializeComponent();
 
-            var list = new List<object>();
-            for (int i = 0; i < 100; i++)
-            {
-                list.Add(new { Name="test"+(i+1)});
-            }
-            gc.ItemsSource = list;
-            gc.ShowOrderNum = Visibility.Visible;
+            //var list = new List<object>();
+            //for (int i = 0; i < 100; i++)
+            //{
+            //    list.Add(new { Name="test"+(i+1)});
+            //}
+            //gc.ItemsSource = list;
+            //gc.ShowOrderNum = Visibility.Visible;
 
         }
 
@@ -38,6 +38,17 @@ namespace WPFDemo
             //ct.IsHaveBox = !ct.IsHaveBox;
 
             //bayView.Refresh();
+            bayView.Test1();
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            bayView.Test2();
+        }
+
+        private void Button_Click_2(object sender, RoutedEventArgs e)
+        {
+            bayView.Test3();
         }
     }
 }

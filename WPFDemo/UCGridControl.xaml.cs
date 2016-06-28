@@ -64,8 +64,6 @@ namespace WPFDemo
             InitializeComponent();
 
         }
-
-
     }
 
     /// <summary>

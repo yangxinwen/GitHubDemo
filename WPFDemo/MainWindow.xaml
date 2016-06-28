@@ -6,13 +6,17 @@
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
         xmlns:local="clr-namespace:WPFDemo"
         mc:Ignorable="d"
-        Title="MainWindow" Height="200" Width="500">
+        Title="MainWindow">
     <Grid x:Name="grid">
-        <!--<local:BayViewCanvas x:Name="bayView"/>-->
-        <local:UCGridControl x:Name="gc">
+        <local:BayViewCanvas x:Name="bayView"/>
+        <!--<local:UCGridControl x:Name="gc">
             <dxg:GridControl.Columns>
                 <dxg:GridColumn FieldName="Name" Header="Name"/>
             </dxg:GridControl.Columns>
-        </local:UCGridControl>
+        </local:UCGridControl>-->
+
+        <Button Content="箱到车" Height="30" Width="60" Click="Button_Click" Margin="188,434,512,41"/>
+        <Button Content="车到箱" Height="30" Width="60" Click="Button_Click_1" Margin="289,434,411,41"/>
+        <Button Content="箱到箱" Height="30" Width="60" Click="Button_Click_2" Margin="391,434,309,41"/>
     </Grid>
 </Window>

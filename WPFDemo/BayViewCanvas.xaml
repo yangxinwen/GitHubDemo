@@ -26,9 +26,9 @@
             Canvas.Top="5"
             Background="#BF0000" />
 
-        <local:ContainerTruck x:Name="ct1" Width="50" Height="55" Canvas.Bottom="0" Canvas.Left="40"/>
+        <local:ContainerTruck x:Name="leftCart" Width="50" Height="55" Canvas.Bottom="0" Canvas.Left="40"/>
 
-        <local:ContainerTruck  Width="50" Height="55"  Canvas.Bottom="0" Canvas.Right="40"/>
+        <local:ContainerTruck x:Name="rightCart"  Width="50" Height="55"  Canvas.Bottom="0" Canvas.Right="40"/>
    
     </Canvas>
 </UserControl>

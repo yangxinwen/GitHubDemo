@@ -62,9 +62,35 @@ namespace WPFDemo
             }
         }
 
+        public double ContainerBoxHeight
+        {
+            get
+            {
+                return containerBox.Height;
+            }
+            set
+            {
+                containerBox.Height = value;
+            }
+        }
+        public double ContainerBoxWidth
+        {
+            get
+            {
+                return containerBox.Width;
+            }
+            set
+            {
+                containerBox.Width = value;
+            }
+        }
+
+
         public ContainerTruck()
         {
             InitializeComponent();
+            ContainerBoxHeight = 30;
+            ContainerBoxWidth = 30;
         }
     }
 }
