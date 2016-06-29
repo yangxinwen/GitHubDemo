@@ -310,7 +310,7 @@ namespace WPFDemo
             BayViewModel tmp = new BayViewModel();
             try
             {
-                StreamReader sr = new StreamReader("2,2ToCartpoint.txt");
+                StreamReader sr = new StreamReader("Data/2,2ToCartpoint.txt");
                 string str = string.Empty;
                 while (!sr.EndOfStream)
                 {
@@ -358,7 +358,7 @@ namespace WPFDemo
             BayViewModel tmp = new BayViewModel();
             try
             {
-                StreamReader sr = new StreamReader("CartTo2,2point.txt");
+                StreamReader sr = new StreamReader("Data/CartTo2,2point.txt");
                 string str = string.Empty;
                 while (!sr.EndOfStream)
                 {
@@ -406,7 +406,7 @@ namespace WPFDemo
             BayViewModel tmp = new BayViewModel();
             try
             {
-                StreamReader sr = new StreamReader("4,1To1,4point.txt");
+                StreamReader sr = new StreamReader("Data/4,1To1,4point.txt");
                 string str = string.Empty;
                 while (!sr.EndOfStream)
                 {
