@@ -93,7 +93,7 @@ namespace WPFDemo
                 startPoint.X = (rootCanvas.Width - maxBoxAreaPoint.X) / 2;
                 startPoint.Y = rootCanvas.Height - maxBoxAreaPoint.Y;
 
-                if (startPoint.X <= (leftCart.Margin.Left + leftCart.Width) || startPoint.Y < (minCart.Margin.Top + minCart.Height + 50))
+                if (startPoint.X <= (leftCart.Margin.Left + leftCart.Width) || startPoint.Y < (minCart.Margin.Top + borderCart.Height + 50))
                     width = height = width - 5;
                 else
                     break;
@@ -144,6 +144,8 @@ namespace WPFDemo
                         tmpBox.BoxStatus = 2;
                         rootCanvas.Children.Add(tmpBox);
                         movingBox = tmpBox;
+
+                        borderLifting.Width = movingBox.Width;
                     }
                 }
             }
@@ -271,6 +273,10 @@ namespace WPFDemo
             //更新移动箱的位置
             if (model.MovingBoxPoint != null && model.MovingBoxPoint.X != 0 && model.MovingBoxPoint.Y != 0)
             {
+                //设置拖链小车的吊具长度   
+                if (model.MinCartHeight > 0)
+                    minCart.Height = model.MinCartHeight;
+
                 movingBox.SetValue(Canvas.LeftProperty, model.MovingBoxPoint.X);
                 movingBox.SetValue(Canvas.TopProperty, model.MovingBoxPoint.Y);
                 movingBox.BoxStatus = 1;
@@ -296,12 +302,24 @@ namespace WPFDemo
                 rightCart.Visibility = Visibility.Collapsed;
 
         }
+        /// <summary>
+        /// 判断坐标点是否有效
+        /// </summary>
+        /// <param name="point"></param>
+        /// <returns></returns>
+        private bool PointIsHaveData(Point point)
+        {
+            if (point == null || point.X == 0 && point.Y == 0) return false;
+            else return true;
+        }
+
 
         /// <summary>
         /// 箱到左边集卡
         /// </summary>
         public void Test1()
         {
+            minCart.Height = 45;
             var list = new List<BayViewModel>();
             var model = new BayViewModel();
             model.HaveLeftCart = true;
@@ -312,6 +330,7 @@ namespace WPFDemo
             {
                 StreamReader sr = new StreamReader("Data/2,2ToCartpoint.txt");
                 string str = string.Empty;
+                bool flag = false; //初始化吊具长度变量
                 while (!sr.EndOfStream)
                 {
                     str = sr.ReadLine();
@@ -322,9 +341,28 @@ namespace WPFDemo
                         {
                             tmp = model.Clone() as BayViewModel;
                             tmp.MovingBoxPoint = new Point(double.Parse(split[0]), double.Parse(split[1]));
-                            tmp.MinCartPoint = new Point(tmp.MovingBoxPoint.X, (double)minCart.GetValue(Canvas.TopProperty));
+                            if (flag)
+                                tmp.MinCartHeight = tmp.MovingBoxPoint.Y + 5;
+                            else
+                                tmp.MinCartHeight = minCart.Height + 5;
+                            //计算小车与移动箱的居中坐标
+                            var minCartX = tmp.MovingBoxPoint.X - (minCart.Width - movingBox.Width) / 2;
+                            tmp.MinCartPoint = new Point(minCartX, (double)minCart.GetValue(Canvas.TopProperty));
                             tmp.Boxs[2, 2] = 2;
                             list.Add(tmp);
+
+                            while (!flag)
+                            {
+                                tmp = tmp.Clone() as BayViewModel;
+                                tmp.MinCartHeight += 5;
+                                list.Add(tmp);
+                                if (tmp.MinCartHeight > tmp.MovingBoxPoint.Y)
+                                {
+                                    tmp.MinCartHeight += 5;
+                                    break;
+                                }
+                            }
+                            flag = true;
                         }
                     }
                 }
@@ -336,6 +374,9 @@ namespace WPFDemo
 
             Task.Factory.StartNew(() =>
             {
+
+
+
                 foreach (var item in list)
                 {
                     Thread.Sleep(1 * 100);
@@ -350,6 +391,8 @@ namespace WPFDemo
         /// </summary>
         public void Test2()
         {
+            minCart.Height = 45;
+
             var list = new List<BayViewModel>();
             var model = new BayViewModel();
             model.HaveLeftCart = true;
@@ -360,6 +403,7 @@ namespace WPFDemo
             {
                 StreamReader sr = new StreamReader("Data/CartTo2,2point.txt");
                 string str = string.Empty;
+                bool flag = false; //初始化吊具长度变量
                 while (!sr.EndOfStream)
                 {
                     str = sr.ReadLine();
@@ -370,9 +414,28 @@ namespace WPFDemo
                         {
                             tmp = model.Clone() as BayViewModel;
                             tmp.MovingBoxPoint = new Point(double.Parse(split[0]), double.Parse(split[1]));
-                            tmp.MinCartPoint = new Point(tmp.MovingBoxPoint.X, (double)minCart.GetValue(Canvas.TopProperty));
+                            if (flag)
+                                tmp.MinCartHeight = tmp.MovingBoxPoint.Y + 5;
+                            else
+                                tmp.MinCartHeight = minCart.Height + 5;
+                            //计算小车与移动箱的居中坐标
+                            var minCartX = tmp.MovingBoxPoint.X - (minCart.Width - movingBox.Width) / 2;
+                            tmp.MinCartPoint = new Point(minCartX, (double)minCart.GetValue(Canvas.TopProperty));
                             //tmp.Boxs[2, 2] = 2;
                             list.Add(tmp);
+
+                            while (!flag)
+                            {
+                                tmp = tmp.Clone() as BayViewModel;
+                                tmp.MinCartHeight += 5;
+                                list.Add(tmp);
+                                if (tmp.MinCartHeight > tmp.MovingBoxPoint.Y)
+                                {
+                                    tmp.MinCartHeight += 5;
+                                    break;
+                                }
+                            }
+                            flag = true;
                         }
                     }
                 }
@@ -393,11 +456,14 @@ namespace WPFDemo
             });
         }
 
+   
         /// <summary>
         /// 箱到箱
         /// </summary>
         public void Test3()
         {
+            minCart.Height = 45;
+
             var list = new List<BayViewModel>();
             var model = new BayViewModel();
             model.HaveLeftCart = true;
@@ -408,6 +474,7 @@ namespace WPFDemo
             {
                 StreamReader sr = new StreamReader("Data/4,1To1,4point.txt");
                 string str = string.Empty;
+                bool flag = false; //初始化吊具长度变量
                 while (!sr.EndOfStream)
                 {
                     str = sr.ReadLine();
@@ -418,9 +485,28 @@ namespace WPFDemo
                         {
                             tmp = model.Clone() as BayViewModel;
                             tmp.MovingBoxPoint = new Point(double.Parse(split[0]), double.Parse(split[1]));
-                            tmp.MinCartPoint = new Point(tmp.MovingBoxPoint.X, (double)minCart.GetValue(Canvas.TopProperty));
+                            if (flag)
+                                tmp.MinCartHeight = tmp.MovingBoxPoint.Y+5;
+                            else
+                                tmp.MinCartHeight = minCart.Height+5;
+                            //计算小车与移动箱的居中坐标
+                            var minCartX = tmp.MovingBoxPoint.X - (minCart.Width - movingBox.Width) / 2;
+                            tmp.MinCartPoint = new Point(minCartX, (double)minCart.GetValue(Canvas.TopProperty));
                             tmp.Boxs[4, 1] = 2;
                             list.Add(tmp);
+
+                            while (!flag)
+                            {
+                                tmp = tmp.Clone() as BayViewModel;
+                                tmp.MinCartHeight += 5;
+                                list.Add(tmp);
+                                if (tmp.MinCartHeight > tmp.MovingBoxPoint.Y)
+                                {
+                                    tmp.MinCartHeight += 5;
+                                    break;
+                                }
+                            }
+                            flag = true;
                         }
                     }
                 }
@@ -429,7 +515,7 @@ namespace WPFDemo
             {
 
             }
-           
+
 
             Task.Factory.StartNew(() =>
             {
@@ -486,6 +572,11 @@ namespace WPFDemo
         /// 正在被移动箱的(空中箱)位置（null 或者 0,0 代表没有箱被移动或被悬吊）
         /// </summary>
         public Point MovingBoxPoint { get; set; }
+        /// <summary>
+        /// 吊具Y坐标（高度）
+        /// </summary>
+
+        public double MinCartHeight { get; set; }
 
         public int[,] Boxs { get; set; }
 

@@ -18,11 +18,23 @@
     <!--贝视图-->
     <Canvas x:Name="rootCanvas" Height="300" Width="400">
         <Border Height="10" Width="400" Background="#BF0000" VerticalAlignment="Bottom" Canvas.Top="5"/>
-        <Border x:Name="minCart" Canvas.Left="100"
+        <Border x:Name="minCart" Canvas.Left="100" Height="45" Width="50" Panel.ZIndex="0">
+            <Grid>
+                <Grid.RowDefinitions>
+                    <RowDefinition Height="auto"/>
+                    <RowDefinition Height="*"/>
+                </Grid.RowDefinitions>
+                <Border x:Name="borderCart"
                 Background="#BF0000" Height="30" Width="50"  HorizontalAlignment="Left">
-            <TextBlock Text="R001" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                    <TextBlock Text="R001" VerticalAlignment="Center" HorizontalAlignment="Center"/>
+                </Border>
+                <Border x:Name="borderLifting" Grid.Row="1" BorderBrush="Gray" 
+                        CornerRadius="0,0,0,0"
+                        BorderThickness="1.5,0,1.5,1.5" Padding="2,0,2,2" Width="40">
+                    <Border BorderBrush="Gray" CornerRadius="0,0,0,0" BorderThickness="1.5,0,1.5,1.5" />
+                </Border>
+            </Grid>
         </Border>
-
         <Border 
                  Width="10" Height="295"
             Canvas.Left="5"
@@ -38,6 +50,6 @@
         <local:ContainerTruck x:Name="leftCart" Width="50" Height="55" Canvas.Bottom="0" Canvas.Left="40"/>
 
         <local:ContainerTruck x:Name="rightCart"  Width="50" Height="55"  Canvas.Bottom="0" Canvas.Right="40"/>
-   
+
     </Canvas>
 </UserControl>
