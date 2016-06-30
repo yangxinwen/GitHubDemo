@@ -10,7 +10,7 @@
     <Grid>
         <Border   BorderBrush="#865B55" BorderThickness="0" x:Name="border1" Visibility="Visible">
             <Border.Background>
-                <ImageBrush ImageSource="d:/1.png"/>
+                <ImageBrush ImageSource="images/box.png"/>
             </Border.Background>
             <TextBlock Text="" HorizontalAlignment="Center" VerticalAlignment="Center" x:Name="txt"/>
         </Border>
