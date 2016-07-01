@@ -82,6 +82,9 @@
     <Compile Include="CheckButtonOnOff.xaml.cs">
       <DependentUpon>CheckButtonOnOff.xaml</DependentUpon>
     </Compile>
+    <Compile Include="OptimalPath.xaml.cs">
+      <DependentUpon>OptimalPath.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UCGridControl.xaml.cs">
       <DependentUpon>UCGridControl.xaml</DependentUpon>
     </Compile>
@@ -128,6 +131,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="OptimalPath.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UCGridControl.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -196,6 +203,12 @@
     <Content Include="Images\box.png">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+  </ItemGroup>
+  <ItemGroup>
+    <ProjectReference Include="..\Util\Util.csproj">
+      <Project>{B447E876-6D04-4726-8AA0-8DC16040341D}</Project>
+      <Name>Util</Name>
+    </ProjectReference>
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

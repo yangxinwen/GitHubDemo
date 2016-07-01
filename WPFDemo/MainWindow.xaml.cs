@@ -11,6 +11,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Util;
 
 namespace WPFDemo
 {
@@ -30,6 +31,10 @@ namespace WPFDemo
             //}
             //gc.ItemsSource = list;
             //gc.ShowOrderNum = Visibility.Visible;
+
+            var floyd = new FLOYD();
+            floyd.Test();
+
 
         }
 
