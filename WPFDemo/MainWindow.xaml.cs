@@ -32,7 +32,7 @@ namespace WPFDemo
             //gc.ItemsSource = list;
             //gc.ShowOrderNum = Visibility.Visible;
 
-            var floyd = new FLOYD();
+            var floyd = new Floyd();
             floyd.Test();
 
 

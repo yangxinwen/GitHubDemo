@@ -8,41 +8,41 @@ namespace Util
 {
     //以无向图G为入口，得出任意两点之间的路径长度length[i][j]，路径path[i][j][k]，
     //途中无连接得点距离用0表示，点自身也用0表示
-    public class FLOYD
+    public class Floyd
     {
         int[,] length = null;// 任意两点之间路径长度
         int[,,] path = null;// 任意两点之间的路径
 
-        public FLOYD() { }
+        public Floyd() { }
 
-        public FLOYD(int[][] G)
+        public Floyd(int[,] G)
         {
-            int MAX = 100; int row = G.Length;// 图G的行数
-            int[,] spot = new int[row,row];// 定义任意两点之间经过的点
+            int max = 100; int row = G.GetUpperBound(0) + 1;// 图G的行数
+            int[,] spot = new int[row, row];// 定义任意两点之间经过的点
             int[] onePath = new int[row];// 记录一条路径
-            length = new int[row,row];
-            path = new int[row,row,row];
+            length = new int[row, row];
+            path = new int[row, row, row];
             for (int i = 0; i < row; i++)// 处理图两点之间的路径
                 for (int j = 0; j < row; j++)
                 {
-                    if (G[i][j] == 0) G[i][j] = MAX;// 没有路径的两个点之间的路径为默认最大
-                    if (i == j) G[i][j] = 0;// 本身的路径长度为0
+                    if (G[i, j] == 0) G[i, j] = max;// 没有路径的两个点之间的路径为默认最大
+                    if (i == j) G[i, j] = 0;// 本身的路径长度为0
                 }
             for (int i = 0; i < row; i++)// 初始化为任意两点之间没有路径
                 for (int j = 0; j < row; j++)
-                    spot[i,j] = -1;
+                    spot[i, j] = -1;
             for (int i = 0; i < row; i++)// 假设任意两点之间的没有路径
                 onePath[i] = -1;
             for (int v = 0; v < row; ++v)
                 for (int w = 0; w < row; ++w)
-                    length[v,w] = G[v][w];
+                    length[v, w] = G[v, w];
             for (int u = 0; u < row; ++u)
                 for (int v = 0; v < row; ++v)
                     for (int w = 0; w < row; ++w)
-                        if (length[v,w] > length[v,u] + length[u,w])
+                        if (length[v, w] > length[v, u] + length[u, w])
                         {
-                            length[v,w] = length[v,u] + length[u,w];// 如果存在更短路径则取更短路径
-                            spot[v,w] = u;// 把经过的点加入
+                            length[v, w] = length[v, u] + length[u, w];// 如果存在更短路径则取更短路径
+                            spot[v, w] = u;// 把经过的点加入
                         }
             for (int i = 0; i < row; i++)
             {// 求出所有的路径
@@ -53,56 +53,87 @@ namespace Util
                     onePath[point[0]++] = i;
                     OutputPath(spot, i, j, onePath, point);
                     for (int s = 0; s < point[0]; s++)
-                        path[i,j,s] = onePath[s];
+                        path[i, j, s] = onePath[s];
                 }
             }
         }
         void OutputPath(int[,] spot, int i, int j, int[] onePath, int[] point)
         {// 输出i// 到j// 的路径的实际代码，point[]记录一条路径的长度
             if (i == j) return;
-            if (spot[i,j] == -1)
+            if (spot[i, j] == -1)
                 onePath[point[0]++] = j;
             // System.out.print(" "+j+" ");
             else
             {
-                OutputPath(spot, i, spot[i,j], onePath, point);
-                OutputPath(spot, spot[i,j], j, onePath, point);
+                OutputPath(spot, i, spot[i, j], onePath, point);
+                OutputPath(spot, spot[i, j], j, onePath, point);
             }
         }
+
+
         public void Test()
         {
-            int[][] data = new int[][] {
-                           new int[] { 0, 27, 44, 17, 11, 27, 42, 0, 0, 0, 20, 25, 21, 21, 18, 27, 0 },// x1
-                            new int[] { 27, 0, 31, 27, 49, 0, 0, 0, 0, 0, 0, 0, 52, 21, 41, 0, 0 },// 1
-                            new int[] { 44, 31, 0, 19, 0, 27, 32, 0, 0, 0, 47, 0, 0, 0, 32, 0, 0 },// 2
-                            new int[] { 17, 27, 19, 0, 14, 0, 0, 0, 0, 0, 30, 0, 0, 0, 31, 0, 0 },// 3
-                            new int[] { 11, 49, 0, 14, 0, 13, 20, 0, 0, 28, 15, 0, 0, 0, 15, 25, 30 },// 4
-                            new int[] { 27, 0, 27, 0, 13, 0, 9, 21, 0, 26, 26, 0, 0, 0, 28, 29, 0 },// 5
-                            new int[] { 42, 0, 32, 0, 20, 9, 0, 13, 0, 32, 0, 0, 0, 0, 0, 33, 0 },// 6
-                            new int[] { 0, 0, 0, 0, 0, 21, 13, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0 },// 7
-                           new int[]  { 0, 0, 0, 0, 0, 0, 0, 19, 0, 11, 20, 0, 0, 0, 0, 33, 21 },// 8
-                           new int[]  { 0, 0, 0, 0, 28, 26, 32, 0, 11, 0, 10, 20, 0, 0, 29, 14, 13 },// 9
-                           new int[]  { 20, 0, 47, 30, 15, 26, 0, 0, 20, 10, 0, 18, 0, 0, 14, 9, 20 },// 10
-                           new int[]  { 25, 0, 0, 0, 0, 0, 0, 0, 0, 20, 18, 0, 23, 0, 0, 14, 0 },// 11
-                          new int[]   { 21, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 27, 22, 0, 0 },// 12
-                          new int[]   { 21, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27, 0, 0, 0, 0 },// 13
-                          new int[]   { 18, 41, 32, 31, 15, 28, 0, 0, 0, 29, 14, 0, 22, 0, 0, 11, 0 },// 14
-                          new int[]   { 27, 0, 0, 0, 25, 29, 33, 0, 33, 14, 9, 14, 0, 0, 11, 0, 9 },// 15
-                          new int[]   { 0, 0, 0, 0, 30, 0, 0, 0, 21, 13, 20, 0, 0, 0, 0, 9, 0 } // 16
+            //int[,] data = new int[,] {
+            //                { 0, 27, 44, 17, 11, 27, 42, 0, 0, 0, 20, 25, 21, 21, 18, 27, 0 },// x1
+            //                { 27, 0, 31, 27, 49, 0, 0, 0, 0, 0, 0, 0, 52, 21, 41, 0, 0 },// 1
+            //                { 44, 31, 0, 19, 0, 27, 32, 0, 0, 0, 47, 0, 0, 0, 32, 0, 0 },// 2
+            //                { 17, 27, 19, 0, 14, 0, 0, 0, 0, 0, 30, 0, 0, 0, 31, 0, 0 },// 3
+            //                { 11, 49, 0, 14, 0, 13, 20, 0, 0, 28, 15, 0, 0, 0, 15, 25, 30 },// 4
+            //                { 27, 0, 27, 0, 13, 0, 9, 21, 0, 26, 26, 0, 0, 0, 28, 29, 0 },// 5
+            //                { 42, 0, 32, 0, 20, 9, 0, 13, 0, 32, 0, 0, 0, 0, 0, 33, 0 },// 6
+            //                { 0, 0, 0, 0, 0, 21, 13, 0, 19, 0, 0, 0, 0, 0, 0, 0, 0 },// 7
+            //                { 0, 0, 0, 0, 0, 0, 0, 19, 0, 11, 20, 0, 0, 0, 0, 33, 21 },// 8
+            //                { 0, 0, 0, 0, 28, 26, 32, 0, 11, 0, 10, 20, 0, 0, 29, 14, 13 },// 9
+            //                { 20, 0, 47, 30, 15, 26, 0, 0, 20, 10, 0, 18, 0, 0, 14, 9, 20 },// 10
+            //                { 25, 0, 0, 0, 0, 0, 0, 0, 0, 20, 18, 0, 23, 0, 0, 14, 0 },// 11
+            //                { 21, 52, 0, 0, 0, 0, 0, 0, 0, 0, 0, 23, 0, 27, 22, 0, 0 },// 12
+            //                { 21, 21, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 27, 0, 0, 0, 0 },// 13
+            //                { 18, 41, 32, 31, 15, 28, 0, 0, 0, 29, 14, 0, 22, 0, 0, 11, 0 },// 14
+            //                { 27, 0, 0, 0, 25, 29, 33, 0, 33, 14, 9, 14, 0, 0, 11, 0, 9 },// 15
+            //                { 0, 0, 0, 0, 30, 0, 0, 0, 21, 13, 20, 0, 0, 0, 0, 9, 0 } // 16
+            //                };
+
+
+            //int[,] data = new int[,] {
+            //                { 0,10,0,5 ,0,0,0 },// 0
+            //                { 0,0,4,0,20,0,0 },// 1
+            //                { 0,0,0,0,0,0,0},// 2
+            //                { 0,0,0,0,0,7,0},// 3
+            //                { 0,0,0,0,0,0,0},// 4
+            //                { 0,0,3,0,0,0,9},// 5
+            //                { 0,0,0,0,40,0,0},// 6                           
+            //                };
+
+
+            int[,] data = new int[,] {
+                            { 0,2,0,0,0,0,0,0,0,0 },// x1
+                            { 0,0,3,0,0,0,0,0,0,0 },// 1
+                            { 0,3,1,0,0,0,0,0,0,1 },// 2
+                            { 0,0,0,0,0,0,0,0,3,15 },// 3
+                            { 0,0,0,7,0,0,0,10,0,0 },// 4
+                            { 10,0,0,0,8,0,0,0,0,0 },// 5
+                            { 0,0,0,0,0,0,0,0,3,0 },// 6
+                            { 0,0,0,0,0,0,0,0,0,0 },// 7
+                            { 0,0,0,3,0,0,3,0,0,0 },// 8
+                            { 0,0,1,15,0,0,0,25,0,0},// 9                            
                             };
-            for (int i = 0; i < data.Length; i++)
-                for (int j = i; j < data.Length; j++)
-                    if (data[i][j] != data[j][i]) return;
-            FLOYD test = new FLOYD(data);
-            for (int i = 0; i < data.Length; i++)
-                for (int j = i; j < data[i].Length; j++)
+
+            //Floyd1(data);
+            //return;
+
+            //for (int i = 0; i < data.GetUpperBound(0); i++)
+            //    for (int j = i; j < data.GetUpperBound(0); j++)
+            //        if (data[i, j] != data[j, i]) return;
+            Floyd test = new Floyd(data);
+            for (int i = 0; i <= data.GetUpperBound(0); i++)
+                for (int j = 0; j <= data.GetUpperBound(0); j++)
                 {
                     Debug.WriteLine("");
-                    Debug.Write("From " + i + " to " + j + " path is: ");
-                    for (int k = 0; k < test.path[i,j].Length; k++)
-                        Debug.Write(test.path[i][j][k] + " ");
+                    Debug.Write("From " + (i + 1) + " to " + (j + 1) + " path is: ");
+                    for (int k = 0; k <= test.path.GetUpperBound(2); k++)
+                        Debug.Write(test.path[i, j, k] + 1 + " ");
                     Debug.WriteLine("");
-                    Debug.WriteLine("From " + i + " to " + j + " length :" + test.length[i,j]);
+                    Debug.WriteLine("From " + (i + 1) + " to " + (j + 1) + " length :" + test.length[i, j]);
                 }
         }
     }

@@ -50,11 +50,14 @@ namespace WPFDemo
         public BayViewCanvas()
         {
             InitializeComponent();
+            if (System.ComponentModel.DesignerProperties.GetIsInDesignMode(this))
+                return;
+
             var model = new BayViewModel();
             model.HaveLeftCart = true;
             model.Boxs = GetInitBoxData();
             UpdateUI(model);
-            this.MouseMove += BayViewCanvas_MouseMove;
+            //this.MouseMove += BayViewCanvas_MouseMove;
         }
 
         private void BayViewCanvas_MouseMove(object sender, MouseEventArgs e)
