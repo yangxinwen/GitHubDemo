@@ -1,0 +1,30 @@
+﻿<UserControl x:Class="WPFDemo.TimeProgressBar"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFDemo"
+             mc:Ignorable="d" 
+             d:DesignHeight="40" d:DesignWidth="300">
+    <Grid x:Name="rootGrid">
+
+        <Grid.RowDefinitions>
+            <RowDefinition/>
+            <RowDefinition/>
+        </Grid.RowDefinitions>
+
+        <Grid>
+            <Grid.ColumnDefinitions>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+                <ColumnDefinition/>
+            </Grid.ColumnDefinitions>
+
+            <TextBlock Text="拖车确认" HorizontalAlignment="Center" VerticalAlignment="Bottom"/>
+            <TextBlock Grid.Column="1" Text="取箱"  HorizontalAlignment="Center"  VerticalAlignment="Bottom"/>
+            <TextBlock Grid.Column="2" Text="放箱"  HorizontalAlignment="Right" VerticalAlignment="Bottom" />
+        </Grid>
+        <local:UCSlider/>
+        <ProgressBar  Grid.Row="1" x:Name="progressBar"/>
+    </Grid>
+</UserControl>

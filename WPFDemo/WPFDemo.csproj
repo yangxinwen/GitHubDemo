@@ -85,11 +85,20 @@
     <Compile Include="OptimalPath.xaml.cs">
       <DependentUpon>OptimalPath.xaml</DependentUpon>
     </Compile>
+    <Compile Include="TruckTracking.xaml.cs">
+      <DependentUpon>TruckTracking.xaml</DependentUpon>
+    </Compile>
     <Compile Include="UCGridControl.xaml.cs">
       <DependentUpon>UCGridControl.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UCSlider.xaml.cs">
+      <DependentUpon>UCSlider.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkTask.xaml.cs">
       <DependentUpon>WorkTask.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="TimeProgressBar.xaml.cs">
+      <DependentUpon>TimeProgressBar.xaml</DependentUpon>
     </Compile>
     <Compile Include="WorkTaskProgressBar.xaml.cs">
       <DependentUpon>WorkTaskProgressBar.xaml</DependentUpon>
@@ -135,13 +144,25 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="TruckTracking.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="UCGridControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UCSlider.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="WorkTask.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="TimeProgressBar.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
     </Page>
     <Page Include="WorkTaskProgressBar.xaml">
       <SubType>Designer</SubType>
@@ -200,6 +221,15 @@
     <Content Include="Data\CartTo2,2point.txt">
       <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
     </Content>
+    <Content Include="Data\trucktracking1.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Content Include="Data\trucktracking2.txt">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Content>
+    <Resource Include="Images\yardMap.png">
+      <CopyToOutputDirectory>PreserveNewest</CopyToOutputDirectory>
+    </Resource>
     <Resource Include="Images\box.png">
       <CopyToOutputDirectory>Always</CopyToOutputDirectory>
     </Resource>
