@@ -1,5 +1,6 @@
 ﻿using System;
 using System.Collections.Generic;
+using System.Diagnostics;
 using System.Linq;
 using System.Text;
 using System.Windows;
@@ -24,6 +25,12 @@ namespace WPFDemo
         {
             InitializeComponent();
 
+
+
+            for (int i = 0; i < 100; i++)
+            {
+                Debug.WriteLine(100 - i);
+            }
 
         }
     }

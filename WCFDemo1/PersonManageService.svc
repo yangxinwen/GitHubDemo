@@ -1,0 +1,2 @@
+﻿ <!--当我们访问服务的时候IIS会寻找我们这个svc文件来找到我们提供的服务。-->
+<%@ServiceHost Service="WCFDemo1.PersonManageService"%>
