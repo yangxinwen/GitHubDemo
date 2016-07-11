@@ -82,6 +82,9 @@
     <Compile Include="CheckButtonOnOff.xaml.cs">
       <DependentUpon>CheckButtonOnOff.xaml</DependentUpon>
     </Compile>
+    <Compile Include="ContainerTruckDot.xaml.cs">
+      <DependentUpon>ContainerTruckDot.xaml</DependentUpon>
+    </Compile>
     <Compile Include="OptimalPath.xaml.cs">
       <DependentUpon>OptimalPath.xaml</DependentUpon>
     </Compile>
@@ -112,6 +115,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="ContainerBox.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="ContainerTruckDot.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
     </Page>
@@ -239,6 +246,9 @@
       <Project>{B447E876-6D04-4726-8AA0-8DC16040341D}</Project>
       <Name>Util</Name>
     </ProjectReference>
+  </ItemGroup>
+  <ItemGroup>
+    <Folder Include="NewFolder1\" />
   </ItemGroup>
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 

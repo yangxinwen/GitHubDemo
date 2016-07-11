@@ -77,7 +77,7 @@ namespace WPFDemo
         {
             foreach (FrameworkElement item in canvasRoot.Children)
             {
-                var ct = item as ContainerTruck;
+                var ct = item as ContainerTruckDot;
                 if (ct != null)
                 {
                     ct.X = ct.X / e.PreviousSize.Width * e.NewSize.Width;
@@ -152,7 +152,7 @@ namespace WPFDemo
         /// <summary>
         /// 当前显示的集卡
         /// </summary>
-        private ContainerTruck ct;
+        private ContainerTruckDot ct;
 
 
         /// <summary>
@@ -160,7 +160,7 @@ namespace WPFDemo
         /// </summary>
         /// <param name="ct">集卡</param>
         /// <param name="point">比例坐标</param>
-        private void SetCTPostion(ContainerTruck ct, Point point)
+        private void SetCTPostion(ContainerTruckDot ct, Point point)
         {
             var newX = point.X * canvasRoot.ActualWidth - ct.ActualWidth / 2;
             var newY = point.Y * canvasRoot.ActualHeight - ct.ActualHeight / 2;
@@ -196,7 +196,7 @@ namespace WPFDemo
             model.ListPoint = GetCTLine();
             truckTrackingModel = model;
 
-            ContainerTruck ct = new ContainerTruck();
+            ContainerTruckDot ct = new ContainerTruckDot();
             canvasRoot.Children.Add(ct);
             this.ct = ct;
 
@@ -310,7 +310,7 @@ namespace WPFDemo
         private void StartNewTask()
         {
 
-            ContainerTruck ct = new ContainerTruck();
+            ContainerTruckDot ct = new ContainerTruckDot();
             canvasRoot.Children.Add(ct);
             Task.Factory.StartNew(() =>
             {

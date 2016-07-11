@@ -1,0 +1,16 @@
+﻿<UserControl x:Class="WPFDemo.ContainerTruckDot"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFDemo"
+             mc:Ignorable="d" 
+             x:Name="uc"
+             Width="20" Height="20"
+             >
+    <!--集卡用一个圆表示-->
+    <Grid>
+        <Border  Background="#0091FF" CornerRadius="{Binding ElementName=uc,Path=ActualHeight}" >            
+        </Border>
+    </Grid>   
+</UserControl>
