@@ -23,14 +23,7 @@ namespace WPFDemo
     {
         public MainWindow()
         {
-            InitializeComponent();
-
-
-
-            for (int i = 0; i < 100; i++)
-            {
-                Debug.WriteLine(100 - i);
-            }
+            InitializeComponent();    
 
         }
     }
