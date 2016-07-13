@@ -105,22 +105,22 @@ namespace WPFDemo.PathDraw
             }
         }
 
+        private Point _startPoint;
         /// <summary>
         /// 箭头起始点
         /// </summary>
         public Point StartPoint
         {
             get
-            {
-                var point = new Point();
-                point.X = (double)this.GetValue(Canvas.LeftProperty);
-                point.Y = (double)this.GetValue(Canvas.TopProperty);
-                return point;
+            {                
+                return _startPoint;
             }
             set
             {
-                this.SetValue(Canvas.LeftProperty, value.X);
-                this.SetValue(Canvas.TopProperty, value.Y );
+                _startPoint = value;
+                _startPoint.Y=_startPoint.Y - this.Height / 2;
+                this.SetValue(Canvas.LeftProperty, _startPoint.X);
+                this.SetValue(Canvas.TopProperty, _startPoint.Y );
                 EndPoint = _endPoint;
             }
         }
@@ -145,9 +145,11 @@ namespace WPFDemo.PathDraw
                     double c = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));  //width=斜边c=√(a^2+b^2)
                     this.Width = c;
                     //得出两点间的角度  公式 angle = Math.Atan2((Y2 - Y1), (X2 - X2)) * 180 / Math.PI
-                    double angle = Math.Atan2((value.Y - StartPoint.Y), (value.X - StartPoint.X)) * 180 / Math.PI;
-                    this.RenderTransformOrigin = new Point(0, 0);
+                    double angle = Math.Atan2((value.Y- StartPoint.Y-this.Height/2), (value.X - StartPoint.X)) * 180 / Math.PI;
+                    //this.RenderTransformOrigin = new Point(0, 0);
                     var f = new RotateTransform(angle);
+                    f.CenterX = 0;
+                    f.CenterY = this.Height / 2;
                     this.RenderTransform = f;
                 }
                 catch (Exception)

@@ -31,8 +31,8 @@
             BorderThickness="1"
             >
         <Canvas>
-            <TextBlock x:Name="tbName" Text="Note1" Margin="-10,-15,0,0"/>
-            <!--<TextBlock x:Name="tbName" Text="Note1" Visibility="Collapsed"/>-->
+            <!--<TextBlock x:Name="tbName" Text="Note1" Margin="-10,-15,0,0"/>-->
+            <TextBlock x:Name="tbName" Text="Note1" Visibility="Collapsed"/>
         </Canvas>
     </Border>
 </UserControl>

@@ -86,9 +86,10 @@
 
         <Grid Grid.Column="1">
             <Canvas x:Name="canvasPanel" Background="Gray"
+                    MinHeight="100" MinWidth="100"
                     MouseLeftButtonDown="canvasPanel_MouseLeftButtonDown" 
                     MouseLeftButtonUp="canvasPanel_MouseLeftButtonUp" 
-                    MouseMove="canvasPanel_MouseMove"                    
+                    MouseMove="canvasPanel_MouseMove"    
                     >
 
             </Canvas>

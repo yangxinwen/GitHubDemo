@@ -27,6 +27,11 @@ namespace WPFDemo
 
         }
 
+        private void Window_Closed(object sender, EventArgs e)
+        {
+            ps.SaveData();
+        }
+
         //private void canvas_MouseMove(object sender, MouseEventArgs e)
         //{
         //    if (e.LeftButton == MouseButtonState.Pressed)

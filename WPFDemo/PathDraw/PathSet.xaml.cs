@@ -20,6 +20,10 @@ namespace WPFDemo.PathDraw
     /// </summary>
     public partial class PathSet : UserControl
     {
+        private List<NodeModel> tmpNodeModels = new List<NodeModel>();
+        private List<RunLineModel> tmpLineModels = new List<RunLineModel>();
+
+
         private List<NodeBorder> nodeList = new List<NodeBorder>();
         private List<RunLine> runLineList = new List<RunLine>();
         /// <summary>
@@ -56,8 +60,75 @@ namespace WPFDemo.PathDraw
         public PathSet()
         {
             InitializeComponent();
-            CurrentPropertyPanel = ControlType.RunLine;
+            this.Loaded += PathSet_Loaded;
+            canvasPanel.SizeChanged += canvasPanel_SizeChanged;
         }
+
+        private void PathSet_Loaded(object sender, RoutedEventArgs e)
+        {
+            LoadData();
+            MakeUI();
+        }
+
+        private void LoadData()
+        {
+            var data = Util.Util.ReadData<Tuple<List<NodeModel>, List<RunLineModel>>>("PathSetData.dat");
+            if (data != null)
+            {
+                if (data.Item1 != null)
+                    tmpNodeModels = data.Item1;
+                if (data.Item2 != null)
+                    tmpLineModels = data.Item2;
+            }
+        }
+
+        public void SaveData()
+        {
+            foreach (var item in nodeList)
+            {
+                item.X = item.X / canvasPanel.ActualWidth;
+                item.Y = item.Y / canvasPanel.ActualHeight;
+            }
+
+            var nodeModes = nodeList.Select(a => a.Model).ToList();
+            var lineModes = runLineList.Select(a => a.Model).ToList();
+
+            var data = new Tuple<List<NodeModel>, List<RunLineModel>>(nodeModes, lineModes);
+            if (data != null)
+            {
+                Util.Util.SaveData(data, "PathSetData.dat");
+            }
+
+        }
+
+
+        private void MakeUI()
+        {
+            foreach (var item in tmpNodeModels)
+            {
+                var node = MakeNode(item);
+                if (node != null)
+                {
+                    canvasPanel.Children.Add(node);
+                    nodeList.Add(node);
+                }
+            }
+
+            foreach (var item in tmpLineModels)
+            {
+                var line = MakeLine(item);
+                if (line != null)
+                {
+                    line.Model.StartNode = tmpNodeModels.FirstOrDefault(a => a.Name.Equals(line.Model.StartNode.Name));
+                    line.Model.EndNode = tmpNodeModels.FirstOrDefault(a => a.Name.Equals(line.Model.EndNode.Name));
+                    canvasPanel.Children.Add(line);
+                    runLineList.Add(line);
+                    AutoOptimizeLine(line);
+                }
+            }
+        }
+
+
 
         private void lvSelector_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -124,20 +195,19 @@ namespace WPFDemo.PathDraw
                 //完成路线目标节点的选择
                 if (SelectedRunLine != null && SelectedNodeBorder != null)
                 {
-                    if (!SelectedNodeBorder.Model.Equals(SelectedRunLine.Model.SourceNode))
+                    if (!SelectedNodeBorder.Model.Equals(SelectedRunLine.Model.StartNode))
                     {
-                        SelectedRunLine.Model.ObjectNode = SelectedNodeBorder.Model;
+                        SelectedRunLine.Model.EndNode = SelectedNodeBorder.Model;
                         _operateStatus = OperateStatus.SelectedObjNode;
 
                         //设置目标路径自动优化连接点
-                        var sourceNode = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.SourceNode));
+                        var sourceNode = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.StartNode));
                         if (sourceNode != null)
                         {
                             var border = SelectedNodeBorder;
-                            var suitPoint = GetConnectPoint(border, new Point(sourceNode.X, sourceNode.Y));
+                            var suitPoint = GetConnectPoint(border, new Point(sourceNode.CircleCenterPoint.X, sourceNode.CircleCenterPoint.Y));
                             SelectedRunLine.EndPoint = suitPoint;
                         }
-
 
                         //若检测到用户按住ctrl键可连续添加多个路线
                         if ((ctrlState & KeyStates.Down) != KeyStates.Down)
@@ -156,14 +226,14 @@ namespace WPFDemo.PathDraw
                 //完成路线源节点的移动
                 if (SelectedRunLine != null && SelectedNodeBorder != null)
                 {
-                    SelectedRunLine.Model.SourceNode = SelectedNodeBorder.Model;
+                    SelectedRunLine.Model.StartNode = SelectedNodeBorder.Model;
                     _operateStatus = OperateStatus.SelectedLine;
 
                     //设置源路径自动优化连接点    
-                    var objectNode = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.ObjectNode));
+                    var objectNode = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.EndNode));
                     if (objectNode != null)
                     {
-                        var suitPoint = GetConnectPoint(SelectedNodeBorder, new Point(objectNode.X, objectNode.Y));
+                        var suitPoint = GetConnectPoint(SelectedNodeBorder, new Point(objectNode.CircleCenterPoint.X, objectNode.CircleCenterPoint.Y));
                         SelectedRunLine.StartPoint = suitPoint;
                     }
                 }
@@ -173,78 +243,54 @@ namespace WPFDemo.PathDraw
                 //完成路线目标节点的移动
                 if (SelectedNodeBorder != null && SelectedRunLine != null)
                 {
-                    if (!SelectedNodeBorder.Model.Equals(SelectedRunLine.Model.SourceNode))
+                    if (!SelectedNodeBorder.Model.Equals(SelectedRunLine.Model.StartNode))
                     {
-                        SelectedRunLine.Model.ObjectNode = SelectedNodeBorder.Model;
+                        SelectedRunLine.Model.EndNode = SelectedNodeBorder.Model;
                         _operateStatus = OperateStatus.SelectedLine;
 
                         //设置目标路径自动优化连接点    
-                        var sourceNode = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.SourceNode));
+                        var sourceNode = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.StartNode));
                         if (sourceNode != null)
                         {
-                            var suitPoint = GetConnectPoint(SelectedNodeBorder, new Point(sourceNode.X, sourceNode.Y));
+                            var suitPoint = GetConnectPoint(SelectedNodeBorder, new Point(sourceNode.CircleCenterPoint.X, sourceNode.CircleCenterPoint.Y));
                             SelectedRunLine.EndPoint = suitPoint;
                         }
 
                     }
                 }
             }
-            //else if (_operateStatus == OperateStatus.MoveSourceNode)
-            //{
-            //    //完成路线源节点的移动
-            //    if (SelectedNodeBorder != null)
-            //    {
-            //        if (!SelectedNodeBorder.Model.Equals(SelectedRunLine.Model.ObjectNode))
-            //        {
-            //            SelectedRunLine.Model.SourceNode = SelectedNodeBorder.Model;
-            //            _operateStatus = OperateStatus.SelectedLine;
-            //        }
-            //    }
-            //}
-
-
         }
         /// <summary>
-        /// 获取
+        /// 获取该节点所有相关联的线
         /// </summary>
         /// <param name="model"></param>
         /// <returns></returns>
-        private List<RunLine> GetSourceLine(NodeModel model)
+        private List<RunLine> GetNodeRelativeLine(NodeBorder node)
         {
-            var list = runLineList.Where(a => model.Equals(a.Model.SourceNode));
-            return list.ToList();
-        }
-        private List<RunLine> GetObjLine(NodeModel model)
-        {
-            var list = runLineList.Where(a => model.Equals(a.Model.ObjectNode));
+            if (node == null || node.Model == null) return null;
+            var model = node.Model;
+            var list = runLineList.Where(a => model.Equals(a.Model.StartNode) || model.Equals(a.Model.EndNode));
             return list.ToList();
         }
 
         private void canvasPanel_MouseMove(object sender, MouseEventArgs e)
         {
             var point = e.GetPosition(canvasPanel);
+            point.X += 5;
+            point.Y -= 5;
+
 
             if ((_operateStatus == OperateStatus.MoveNode) && SelectedNodeBorder != null)
             {
                 SelectedNodeBorder.X = point.X - SelectedNodeBorder.Width / 2;
                 SelectedNodeBorder.Y = point.Y - SelectedNodeBorder.Height / 2;
 
-
-                var list = GetSourceLine(SelectedNodeBorder.Model);
+                var list = GetNodeRelativeLine(SelectedNodeBorder);
                 if (list != null)
                     foreach (var item in list)
                     {
-                        item.StartPoint = GetConnectPoint(SelectedNodeBorder, item.EndPoint);
+                        AutoOptimizeLine(item);
                     }
-
-                list = GetObjLine(SelectedNodeBorder.Model);
-                if (list != null)
-                    foreach (var item in list)
-                    {
-                        item.EndPoint = GetConnectPoint(SelectedNodeBorder, item.StartPoint);
-                    }
-
-
             }
             else if ((_operateStatus == OperateStatus.SelectedSouceNode ||
                  _operateStatus == OperateStatus.MoveObjNode) &&
@@ -255,9 +301,9 @@ namespace WPFDemo.PathDraw
                 SelectedRunLine.EndPoint = new Point(x, y);
 
                 //设置源路径自动优化连接点
-                if (SelectedRunLine.Model.SourceNode != null)
+                if (SelectedRunLine.Model.StartNode != null)
                 {
-                    var border = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.SourceNode));
+                    var border = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.StartNode));
                     var suitPoint = GetConnectPoint(border, point);
                     SelectedRunLine.StartPoint = suitPoint;
                 }
@@ -271,14 +317,29 @@ namespace WPFDemo.PathDraw
                 SelectedRunLine.StartPoint = new Point(x, y);
 
                 //设置目标路径自动优化连接点
-                if (SelectedRunLine.Model.ObjectNode != null)
+                if (SelectedRunLine.Model.EndNode != null)
                 {
-                    var border = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.ObjectNode));
+                    var border = nodeList.FirstOrDefault(a => a.Model.Equals(SelectedRunLine.Model.EndNode));
                     var suitPoint = GetConnectPoint(border, point);
                     SelectedRunLine.EndPoint = suitPoint;
                 }
             }
         }
+        /// <summary>
+        /// 自动优化线的连接位置
+        /// </summary>
+        /// <param name="line"></param>
+        private void AutoOptimizeLine(RunLine line)
+        {
+            var startNode = nodeList.FirstOrDefault(a => a.Model.Name.Equals(line.Model.StartNode.Name));
+            var endNode = nodeList.FirstOrDefault(a => a.Model.Name.Equals(line.Model.EndNode.Name));
+
+            if (startNode == null || endNode == null) return;
+            line.StartPoint = GetConnectPoint(startNode, endNode.CircleCenterPoint);
+            line.EndPoint = GetConnectPoint(endNode, startNode.CircleCenterPoint);            
+
+        }
+
         /// <summary>
         /// 获取节点的最佳连接点
         /// </summary>
@@ -291,42 +352,13 @@ namespace WPFDemo.PathDraw
             if (border != null)
             {
                 double x, y;
-                x = border.CircleCenterPoint.X;
-                y = border.CircleCenterPoint.Y;
+                var centerPoint = border.CircleCenterPoint;
 
-                //确定放在节点的右边还是左边
-                if (relativePoint.X >= border.X)
-                    x +=7 ;// + border.Width/2;
-                else
-                    x -= 7;
+                //使用圆的角度解决,由圆弧公式可求出xy值
+                double rad = Math.Atan2((relativePoint.Y - centerPoint.Y), (relativePoint.X - centerPoint.X));// 圆弧     
+                x = centerPoint.X + border.CircleR * Math.Cos(rad);
+                y = centerPoint.Y + border.CircleR * Math.Sin(rad);
 
-                //确定放在节点的下边还是上边
-                if (relativePoint.Y >= border.Y)
-                    y += 7; //+ border.Height/2;
-                else
-                    y -= 7; 
-
-
-
-
-                ////确定放在节点的右边还是左边
-                //if (relativePoint.X > border.X)
-                //    x = border.CircleCenterPoint.X;// + border.Width/2;
-                //else
-                //    x = border.CircleCenterPoint.X;
-
-                ////确定放在节点的下边还是上边
-                //if (relativePoint.Y > border.Y)
-                //    y = border.CircleCenterPoint.Y;//+ border.Height/2;
-                //else
-                //    y = border.CircleCenterPoint.Y;                
-
-                ////使用圆的角度解决
-                //double angle = Math.Atan2((relativePoint.Y - border.CircleCenterPoint.Y), (relativePoint.X - border.CircleCenterPoint.X));// 圆弧
-
-                //x = border.CircleCenterPoint.X + border.CircleR * Math.Cos(angle);
-                //y = border.CircleCenterPoint.Y + border.CircleR * Math.Sin(angle);
-                //Debug.WriteLine(angle);
                 point.X = x;
                 point.Y = y;
             }
@@ -350,16 +382,24 @@ namespace WPFDemo.PathDraw
                     break;
             }
             node.Position = point;
+            var border = MakeNode(node);
+            if (border != null)
+            {
+                canvasPanel.Children.Add(border);
+                nodeList.Add(border);
+            }
+        }
 
+        private NodeBorder MakeNode(NodeModel mode)
+        {
             var border = new NodeBorder();
             border.Cursor = Cursors.Hand;
-            border.X = point.X * canvasPanel.ActualWidth - border.Width / 2;
-            border.Y = point.Y * canvasPanel.ActualHeight - border.Height / 2;
-            canvasPanel.Children.Add(border);
+            border.X = mode.Position.X * canvasPanel.ActualWidth - border.Width / 2;
+            border.Y = mode.Position.Y * canvasPanel.ActualHeight - border.Height / 2;
             border.MouseLeftButtonDown += Border_MouseLeftButtonDown;
             border.MouseLeftButtonUp += Border_MouseLeftButtonUp;
-            border.Model = node;
-            nodeList.Add(border);
+            border.Model = mode;
+            return border;
         }
 
         /// <summary>
@@ -378,21 +418,22 @@ namespace WPFDemo.PathDraw
             }
             set
             {
-                if (value != _selectedNodeBorder)
-                {
+                //if (value != _selectedNodeBorder)
+                //{
                     if (_selectedNodeBorder != null)
                         _selectedNodeBorder.IsSelected = false;
                     _selectedNodeBorder = value;
                     if (value != null)
                     {
                         value.IsSelected = true;
+                        CurrentPropertyPanel = ControlType.Node;
                         if (_selectedRunLine != null)
                         {
                             _selectedRunLine.IsSelected = false;
                             //_selectedRunLine = null;
                         }
                     }
-                }
+                //}
             }
         }
 
@@ -402,7 +443,7 @@ namespace WPFDemo.PathDraw
         {
             var border = sender as NodeBorder;
             if (border == null) return;
-            if (border != SelectedNodeBorder)
+            if (border != SelectedNodeBorder || border.IsSelected != true)
             {
                 //变更选择的节点
                 border.IsSelected = true;
@@ -446,6 +487,7 @@ namespace WPFDemo.PathDraw
                     if (value != null)
                     {
                         value.IsSelected = true;
+                        CurrentPropertyPanel = ControlType.RunLine;
                         if (_selectedNodeBorder != null)
                         {
                             _selectedNodeBorder.IsSelected = false;
@@ -476,7 +518,6 @@ namespace WPFDemo.PathDraw
                 line.EndPoint = new Point(x, y);
             }
             line.MouseLeftButtonUp += Line_MouseLeftButtonUp;
-            line.MouseLeftButtonDown += Line_MouseLeftButtonDown;
             canvasPanel.Children.Add(line);
             line.Model = lineMode;
             runLineList.Add(line);
@@ -492,41 +533,30 @@ namespace WPFDemo.PathDraw
         private RunLine AddLine(NodeBorder sourceNode)
         {
             var lineMode = new RunLineModel();
-            lineMode.SourceNode = sourceNode.Model;
+            lineMode.StartNode = sourceNode.Model;
 
-            var line = new RunLine();
+            var line = MakeLine(lineMode);
             line.Height = 15;
             var x = sourceNode.X - sourceNode.Width / 2;
             var y = sourceNode.Y - sourceNode.Height / 2;
             line.StartPoint = new Point(x, y);
             line.EndPoint = new Point(x, y);
-            line.Cursor = Cursors.Hand;
-            line.MouseLeftButtonUp += Line_MouseLeftButtonUp;
-            line.MouseLeftButtonDown += Line_MouseLeftButtonDown;
             canvasPanel.Children.Add(line);
-            line.Model = lineMode;
             runLineList.Add(line);
             return line;
         }
-        private void Line_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+
+        private RunLine MakeLine(RunLineModel mode)
         {
-            return;
-            var line = sender as RunLine;
-            if (line != null && (line == SelectedRunLine) && (_operateStatus == OperateStatus.SelectedLine))
-            {
-                //若该路线已选择,鼠标处于按下状态则可以移动
-
-                var point = e.GetPosition(line);
-
-                if (Math.Abs(SelectedRunLine.EndPoint.X - SelectedRunLine.StartPoint.X) / 2 > point.X)
-                    _operateStatus = OperateStatus.MoveSourceNode;
-                else
-                    _operateStatus = OperateStatus.MoveObjNode;
-
-                SelectedNodeBorder.IsSelected = false;
-            }
-
+            var line = new RunLine();
+            line.Height = 15;
+            line.Cursor = Cursors.Hand;
+            line.MouseLeftButtonUp += Line_MouseLeftButtonUp;
+            line.Model = mode;
+            return line;
         }
+
+
         private void Line_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
             var line = sender as RunLine;
@@ -579,6 +609,23 @@ namespace WPFDemo.PathDraw
                 }
             }
 
+        }
+
+        private void canvasPanel_SizeChanged(object sender, SizeChangedEventArgs e)
+        {
+            foreach (FrameworkElement item in canvasPanel.Children)
+            {
+                var node = item as NodeBorder;
+                if (node != null)
+                {
+                    node.X = node.X / e.PreviousSize.Width * e.NewSize.Width;
+                    node.Y = node.Y / e.PreviousSize.Height * e.NewSize.Height;
+                }
+            }
+            foreach (var item in runLineList)
+            {
+                AutoOptimizeLine(item);
+            }
         }
     }
 
@@ -655,6 +702,11 @@ namespace WPFDemo.PathDraw
         /// </summary>
 
         public bool IsEnable { get; set; } = true;
+
+        public override string ToString()
+        {
+            return Name;
+        }
     }
 
     /// <summary>
@@ -673,11 +725,15 @@ namespace WPFDemo.PathDraw
         /// <summary>
         /// 源节点
         /// </summary>
-        public NodeModel SourceNode { get; set; }
+        public NodeModel StartNode { get; set; }
         /// <summary>
         /// 目标节点
         /// </summary>
-        public NodeModel ObjectNode { get; set; }
+        public NodeModel EndNode { get; set; }
+
+        //public Point StartPoint { get; set; }
+        //public Point EndPoint { get; set; }
+
     }
     /// <summary>
     /// 控件类型
