@@ -5,10 +5,16 @@
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
         xmlns:local="clr-namespace:WPFDemo"
+        xmlns:pathDraw="clr-namespace:WPFDemo.PathDraw"
         mc:Ignorable="d"
         Title="MainWindow">
     <Grid x:Name="grid">
         <!--<local:BayViewCanvas x:Name="bayView"/>-->
-        <local:TruckTracking/>
+        <!--<local:TruckTracking/>-->
+        <pathDraw:PathSet/>
+        <!--<Grid x:Name="canvas"  Background="Green">
+            <pathDraw:RunLine  x:Name="line"  IsSelected="True" >              
+            </pathDraw:RunLine>
+        </Grid>-->
     </Grid>
 </Window>

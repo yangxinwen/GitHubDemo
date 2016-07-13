@@ -62,6 +62,8 @@
     <Reference Include="DevExpress.Xpf.Grid.v15.2.Core, Version=15.2.4.0, Culture=neutral, PublicKeyToken=b88d1754d700e49a" />
     <Reference Include="System" />
     <Reference Include="System.Data" />
+    <Reference Include="System.Drawing" />
+    <Reference Include="System.Windows.Forms" />
     <Reference Include="System.Xml" />
     <Reference Include="Microsoft.CSharp" />
     <Reference Include="System.Core" />
@@ -85,8 +87,17 @@
     <Compile Include="ContainerTruckDot.xaml.cs">
       <DependentUpon>ContainerTruckDot.xaml</DependentUpon>
     </Compile>
-    <Compile Include="OptimalPath.xaml.cs">
-      <DependentUpon>OptimalPath.xaml</DependentUpon>
+    <Compile Include="PathDraw\NodeBorder.xaml.cs">
+      <DependentUpon>NodeBorder.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PathDraw\PathSet.xaml.cs">
+      <DependentUpon>PathSet.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PathDraw\RunLine.xaml.cs">
+      <DependentUpon>RunLine.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="PathDraw\TestCircle.xaml.cs">
+      <DependentUpon>TestCircle.xaml</DependentUpon>
     </Compile>
     <Compile Include="TruckTracking.xaml.cs">
       <DependentUpon>TruckTracking.xaml</DependentUpon>
@@ -147,7 +158,19 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
-    <Page Include="OptimalPath.xaml">
+    <Page Include="PathDraw\NodeBorder.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PathDraw\PathSet.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PathDraw\RunLine.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="PathDraw\TestCircle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -247,9 +270,7 @@
       <Name>Util</Name>
     </ProjectReference>
   </ItemGroup>
-  <ItemGroup>
-    <Folder Include="NewFolder1\" />
-  </ItemGroup>
+  <ItemGroup />
   <Import Project="$(MSBuildToolsPath)\Microsoft.CSharp.targets" />
   <!-- To modify your build process, add your task inside one of the targets below and uncomment it. 
        Other similar extension points exist, see Microsoft.Common.targets.

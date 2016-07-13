@@ -26,5 +26,18 @@ namespace WPFDemo
             InitializeComponent();    
 
         }
+
+        //private void canvas_MouseMove(object sender, MouseEventArgs e)
+        //{
+        //    if (e.LeftButton == MouseButtonState.Pressed)
+        //        line.EndPoint = e.GetPosition(canvas);
+        //}
+
+
+
+
+
+
     }
+
 }
