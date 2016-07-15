@@ -7,7 +7,7 @@ using System.IO;
 
 namespace Util
 {
-    class Util
+    public class Util
     {
         /// <summary>
         /// 对象转换成json串
@@ -51,14 +51,14 @@ namespace Util
             {
                 string str = ObjectToJson<T>(obj);
                 string dirPath = Path.GetDirectoryName(path);
-                if (!Directory.Exists(dirPath))
+                if (!string.IsNullOrWhiteSpace(dirPath) && !Directory.Exists(dirPath))
                     Directory.CreateDirectory(dirPath);
 
                 var sw = new StreamWriter(path);
                 sw.Write(str);
                 sw.Close();
             }
-            catch (Exception)
+            catch (Exception ex)
             {
                 return false;
             }
