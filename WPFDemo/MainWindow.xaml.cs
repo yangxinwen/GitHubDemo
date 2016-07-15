@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -23,13 +25,23 @@ namespace WPFDemo
     {
         public MainWindow()
         {
-            InitializeComponent();    
+            InitializeComponent();
+            this.Loaded += MainWindow_Loaded;
+        }
 
+        private void MainWindow_Loaded(object sender, RoutedEventArgs e)
+        {
+            Task.Factory.StartNew(() =>
+            {
+                //Thread.Sleep(1 * 10);
+                //this.Dispatcher.Invoke(new Action(() => { ps.OptimizeAllLine(); }));
+                
+            });
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            ps.SaveData();
+            //ps.SaveData();
         }
 
         //private void canvas_MouseMove(object sender, MouseEventArgs e)

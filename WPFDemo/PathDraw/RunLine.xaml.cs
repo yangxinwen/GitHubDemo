@@ -141,13 +141,14 @@ namespace WPFDemo.PathDraw
                 {
                     _endPoint = value;
                     double a = Math.Abs(value.X - StartPoint.X);
-                    double b = Math.Abs(value.Y - StartPoint.Y);
+                    double b = Math.Abs(value.Y - StartPoint.Y - this.Height / 2);
                     double c = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));  //width=斜边c=√(a^2+b^2)
                     this.Width = c;
                     //得出两点间的角度  公式 angle = Math.Atan2((Y2 - Y1), (X2 - X2)) * 180 / Math.PI
-                    double angle = Math.Atan2((value.Y- StartPoint.Y-this.Height/2), (value.X - StartPoint.X)) * 180 / Math.PI;
+                    double angle = Math.Atan2((value.Y- StartPoint.Y-this.Height/2), (value.X - StartPoint.X)) * 180 / Math.PI;   
                     //this.RenderTransformOrigin = new Point(0, 0);
                     var f = new RotateTransform(angle);
+                    //设置中心点，否则选择会产生偏移
                     f.CenterX = 0;
                     f.CenterY = this.Height / 2;
                     this.RenderTransform = f;
@@ -172,8 +173,8 @@ namespace WPFDemo.PathDraw
         private void uc_SizeChanged(object sender, SizeChangedEventArgs e)
         {
             startPath.Height = this.ActualHeight * 1.5;
-            endPath.Height = this.ActualHeight * 1.5;
-            border.Height = this.ActualHeight / 2;
+            endPath.Height = this.ActualHeight * 1;
+            border.Height = this.ActualHeight / 4;
         }
         /// <summary>
         /// 自动设置border的margin，保持与箭头的无缝衔接

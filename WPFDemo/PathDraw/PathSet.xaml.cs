@@ -20,6 +20,8 @@ namespace WPFDemo.PathDraw
     /// </summary>
     public partial class PathSet : UserControl
     {
+        #region Field
+
         private List<NodeModel> tmpNodeModels = new List<NodeModel>();
         private List<RunLineModel> tmpLineModels = new List<RunLineModel>();
 
@@ -56,12 +58,67 @@ namespace WPFDemo.PathDraw
             }
         }
 
+        #endregion
+
 
         public PathSet()
         {
             InitializeComponent();
             this.Loaded += PathSet_Loaded;
+            canvasPanel.KeyUp += CanvasPanel_KeyUp;
             canvasPanel.SizeChanged += canvasPanel_SizeChanged;
+            this.KeyUp += CanvasPanel_KeyUp;
+        }
+
+        private void CanvasPanel_KeyUp(object sender, KeyEventArgs e)
+        {
+            if (e.Key == Key.Delete)
+            {
+
+            }
+        }
+        /// <summary>
+        /// 移除指定节点
+        /// </summary>
+        private bool RemoveNode(NodeBorder node)
+        {
+            if (node != null)
+            {
+                var lineList = GetNodeRelativeLine(node);
+                if (lineList == null || lineList.Count == 0)
+                {
+                    if (MessageBox.Show("确认删除节点？", "确认", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+                        return false;
+                }
+                else
+                {
+                    if (MessageBox.Show("该节点下还有行驶路线，是否需要一起删除？", "确认", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+                        return false;
+
+                    //移除相关联的路线
+                    foreach (var item in lineList)
+                    {
+                        if (RemoveLine(item) == false) return false;
+                    }
+                }
+                canvasPanel.Children.Remove(node);
+                nodeList.Remove(node);
+                return false;
+            }
+            return true;
+        }
+
+
+        private bool RemoveLine(RunLine line)
+        {
+            if (line != null)
+            {
+                if (MessageBox.Show("确认删除该行驶路线？", "确认", MessageBoxButton.OKCancel) != MessageBoxResult.OK)
+                    return false;
+                canvasPanel.Children.Remove(line);
+                runLineList.Remove(line);
+            }
+            return true;
         }
 
         private void PathSet_Loaded(object sender, RoutedEventArgs e)
@@ -86,8 +143,9 @@ namespace WPFDemo.PathDraw
         {
             foreach (var item in nodeList)
             {
-                item.X = item.X / canvasPanel.ActualWidth;
-                item.Y = item.Y / canvasPanel.ActualHeight;
+                var x = item.X / canvasPanel.ActualWidth;
+                var y = item.Y / canvasPanel.ActualHeight;
+                item.Model.Position = new Point(x, y);
             }
 
             var nodeModes = nodeList.Select(a => a.Model).ToList();
@@ -127,8 +185,16 @@ namespace WPFDemo.PathDraw
                 }
             }
         }
-
-
+        /// <summary>
+        /// 优化所有线
+        /// </summary>
+        public void OptimizeAllLine()
+        {
+            foreach (var item in runLineList)
+            {
+                AutoOptimizeLine(item);
+            }
+        }
 
         private void lvSelector_MouseLeftButtonUp(object sender, MouseButtonEventArgs e)
         {
@@ -269,16 +335,24 @@ namespace WPFDemo.PathDraw
         {
             if (node == null || node.Model == null) return null;
             var model = node.Model;
-            var list = runLineList.Where(a => model.Equals(a.Model.StartNode) || model.Equals(a.Model.EndNode));
+            var list = runLineList.Where(a => model.Name.Equals(a.Model.StartNode.Name) || model.Name.Equals(a.Model.EndNode.Name));
             return list.ToList();
         }
 
         private void canvasPanel_MouseMove(object sender, MouseEventArgs e)
         {
             var point = e.GetPosition(canvasPanel);
-            point.X += 5;
-            point.Y -= 5;
 
+            if (point.X < 10 || point.Y < 10 ||
+                point.X > canvasPanel.ActualWidth - 20 ||
+                point.Y > canvasPanel.ActualHeight - 20)
+                return;
+
+
+
+            //设置偏移点，防止移动线条或添加线条时单击选择不到节点
+            point.X += 15;
+            point.Y += 20;
 
             if ((_operateStatus == OperateStatus.MoveNode) && SelectedNodeBorder != null)
             {
@@ -336,7 +410,7 @@ namespace WPFDemo.PathDraw
 
             if (startNode == null || endNode == null) return;
             line.StartPoint = GetConnectPoint(startNode, endNode.CircleCenterPoint);
-            line.EndPoint = GetConnectPoint(endNode, startNode.CircleCenterPoint);            
+            line.EndPoint = GetConnectPoint(endNode, startNode.CircleCenterPoint);
 
         }
 
@@ -394,10 +468,11 @@ namespace WPFDemo.PathDraw
         {
             var border = new NodeBorder();
             border.Cursor = Cursors.Hand;
-            border.X = mode.Position.X * canvasPanel.ActualWidth - border.Width / 2;
-            border.Y = mode.Position.Y * canvasPanel.ActualHeight - border.Height / 2;
+            border.X = mode.Position.X * canvasPanel.ActualWidth;// - border.Width / 2;
+            border.Y = mode.Position.Y * canvasPanel.ActualHeight;// - border.Height / 2;
             border.MouseLeftButtonDown += Border_MouseLeftButtonDown;
             border.MouseLeftButtonUp += Border_MouseLeftButtonUp;
+            border.DeleteCommand = new EventHandler((s, e) => { RemoveNode(SelectedNodeBorder); SelectedNodeBorder = null; });
             border.Model = mode;
             return border;
         }
@@ -420,19 +495,19 @@ namespace WPFDemo.PathDraw
             {
                 //if (value != _selectedNodeBorder)
                 //{
-                    if (_selectedNodeBorder != null)
-                        _selectedNodeBorder.IsSelected = false;
-                    _selectedNodeBorder = value;
-                    if (value != null)
+                if (_selectedNodeBorder != null)
+                    _selectedNodeBorder.IsSelected = false;
+                _selectedNodeBorder = value;
+                if (value != null)
+                {
+                    value.IsSelected = true;
+                    CurrentPropertyPanel = ControlType.Node;
+                    if (_selectedRunLine != null)
                     {
-                        value.IsSelected = true;
-                        CurrentPropertyPanel = ControlType.Node;
-                        if (_selectedRunLine != null)
-                        {
-                            _selectedRunLine.IsSelected = false;
-                            //_selectedRunLine = null;
-                        }
+                        _selectedRunLine.IsSelected = false;
+                        //_selectedRunLine = null;
                     }
+                }
                 //}
             }
         }
@@ -494,7 +569,6 @@ namespace WPFDemo.PathDraw
                         }
                     }
                 }
-
             }
         }
 
@@ -517,7 +591,6 @@ namespace WPFDemo.PathDraw
                 y = objNode.Y * canvasPanel.ActualHeight - objNode.Height / 2;
                 line.EndPoint = new Point(x, y);
             }
-            line.MouseLeftButtonUp += Line_MouseLeftButtonUp;
             canvasPanel.Children.Add(line);
             line.Model = lineMode;
             runLineList.Add(line);
@@ -536,7 +609,6 @@ namespace WPFDemo.PathDraw
             lineMode.StartNode = sourceNode.Model;
 
             var line = MakeLine(lineMode);
-            line.Height = 15;
             var x = sourceNode.X - sourceNode.Width / 2;
             var y = sourceNode.Y - sourceNode.Height / 2;
             line.StartPoint = new Point(x, y);
@@ -551,6 +623,7 @@ namespace WPFDemo.PathDraw
             var line = new RunLine();
             line.Height = 15;
             line.Cursor = Cursors.Hand;
+            line.Background = Brushes.Gray;
             line.MouseLeftButtonUp += Line_MouseLeftButtonUp;
             line.Model = mode;
             return line;
@@ -625,6 +698,20 @@ namespace WPFDemo.PathDraw
             foreach (var item in runLineList)
             {
                 AutoOptimizeLine(item);
+            }
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            if (SelectedNodeBorder != null && SelectedNodeBorder.IsSelected == true)
+            {
+                RemoveNode(SelectedNodeBorder);
+                SelectedNodeBorder = null;
+            }
+            else if (SelectedRunLine != null && SelectedRunLine.IsSelected == true)
+            {
+                RemoveLine(SelectedRunLine);
+                SelectedRunLine = null;
             }
         }
     }

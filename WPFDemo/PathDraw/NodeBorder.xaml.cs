@@ -107,10 +107,20 @@ namespace WPFDemo
                     tbName.Text = model.Name;
             }
         }
+        /// <summary>
+        /// 删除命令
+        /// </summary>
+        public EventHandler DeleteCommand;
+
 
         public NodeBorder()
         {
             InitializeComponent();
+        }
+
+        private void MenuItem_Click(object sender, RoutedEventArgs e)
+        {
+            DeleteCommand?.Invoke(this, e);
         }
     }
 }

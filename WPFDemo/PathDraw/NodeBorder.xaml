@@ -21,8 +21,7 @@
                 <GradientStop Color="Blue" Offset="1"/>
             </LinearGradientBrush.GradientStops>
         </LinearGradientBrush>
-    </UserControl.Resources>
-    
+    </UserControl.Resources> 
     <Border x:Name="border" 
             Height="{Binding ElementName=uc,Path=ActualHeight}"
             Width="{Binding ElementName=uc,Path=ActualWidth}"
@@ -31,8 +30,8 @@
             BorderThickness="1"
             >
         <Canvas>
-            <!--<TextBlock x:Name="tbName" Text="Note1" Margin="-10,-15,0,0"/>-->
-            <TextBlock x:Name="tbName" Text="Note1" Visibility="Collapsed"/>
+            <TextBlock x:Name="tbName" Text="Note1" Margin="-10,-15,0,0"/>
+            <!--<TextBlock x:Name="tbName" Text="Note1" Visibility="Collapsed"/>-->
         </Canvas>
     </Border>
 </UserControl>
