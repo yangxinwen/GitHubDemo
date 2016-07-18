@@ -18,7 +18,7 @@ namespace WPFDemo
     /// <summary>
     /// NodeBorder.xaml 的交互逻辑
     /// </summary>
-    public partial class NodeBorder : UserControl
+    public partial class UCNode : UserControl
     {
         /// <summary>
         /// 获取圆半径长度
@@ -92,28 +92,42 @@ namespace WPFDemo
                 }
             }
         }
-
-        private NodeModel model;
-        public NodeModel Model
+        /// <summary>
+        /// 显示文本(节点名称)
+        /// </summary>
+        public string DisplayText
         {
             get
             {
-                return model;
+                return tbName.Text;
             }
             set
             {
-                model = value;
-                if (model != null)
-                    tbName.Text = model.Name;
+                tbName.Text = value;
             }
         }
+
+        //private NodeModel model;
+        //public NodeModel Model
+        //{
+        //    get
+        //    {
+        //        return model;
+        //    }
+        //    set
+        //    {
+        //        model = value;
+        //        if (model != null)
+        //            tbName.Text = model.Name;
+        //    }
+        //}
         /// <summary>
         /// 删除命令
         /// </summary>
         public EventHandler DeleteCommand;
 
 
-        public NodeBorder()
+        public UCNode()
         {
             InitializeComponent();
         }

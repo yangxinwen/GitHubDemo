@@ -17,7 +17,7 @@ namespace WPFDemo.PathDraw
     /// <summary>
     /// RunLine.xaml 的交互逻辑
     /// </summary>
-    public partial class RunLine : UserControl
+    public partial class UCLine : UserControl
     {
         private bool isSelected = false;
         /// <summary>
@@ -112,15 +112,15 @@ namespace WPFDemo.PathDraw
         public Point StartPoint
         {
             get
-            {                
+            {
                 return _startPoint;
             }
             set
             {
                 _startPoint = value;
-                _startPoint.Y=_startPoint.Y - this.Height / 2;
+                _startPoint.Y = _startPoint.Y - this.Height / 2;
                 this.SetValue(Canvas.LeftProperty, _startPoint.X);
-                this.SetValue(Canvas.TopProperty, _startPoint.Y );
+                this.SetValue(Canvas.TopProperty, _startPoint.Y);
                 EndPoint = _endPoint;
             }
         }
@@ -145,7 +145,7 @@ namespace WPFDemo.PathDraw
                     double c = Math.Sqrt(Math.Pow(a, 2) + Math.Pow(b, 2));  //width=斜边c=√(a^2+b^2)
                     this.Width = c;
                     //得出两点间的角度  公式 angle = Math.Atan2((Y2 - Y1), (X2 - X2)) * 180 / Math.PI
-                    double angle = Math.Atan2((value.Y- StartPoint.Y-this.Height/2), (value.X - StartPoint.X)) * 180 / Math.PI;   
+                    double angle = Math.Atan2((value.Y - StartPoint.Y - this.Height / 2), (value.X - StartPoint.X)) * 180 / Math.PI;
                     //this.RenderTransformOrigin = new Point(0, 0);
                     var f = new RotateTransform(angle);
                     //设置中心点，否则选择会产生偏移
@@ -159,12 +159,22 @@ namespace WPFDemo.PathDraw
                 }
             }
         }
-        /// <summary>
-        /// 绑定的model属性
-        /// </summary>
-        public RunLineModel Model { get; set; }
+        ///// <summary>
+        ///// 绑定的model属性
+        ///// </summary>
+        //public RunLineModel Model { get; set; }
 
-        public RunLine()
+        /// <summary>
+        /// 开始节点
+        /// </summary>
+        public string StartNode { get; set; }
+        /// <summary>
+        /// 结束节点
+        /// </summary>
+        public string EndNode { get; set; }
+
+
+        public UCLine()
         {
             InitializeComponent();
             IsShowStartArrow = false;

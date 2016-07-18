@@ -80,7 +80,7 @@ namespace WPFDemo.PathDraw
 
 
 
-            var runLine = new RunLine();
+            var runLine = new UCLine();
             runLine.Height = 15;
             runLine.StartPoint = new Point(centerPoint.X, centerPoint.Y-runLine.Height/2);
             runLine.EndPoint = point;
