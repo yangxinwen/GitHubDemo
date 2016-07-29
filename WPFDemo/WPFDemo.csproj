@@ -87,6 +87,12 @@
     <Compile Include="ContainerTruckDot.xaml.cs">
       <DependentUpon>ContainerTruckDot.xaml</DependentUpon>
     </Compile>
+    <Compile Include="DrawRect.xaml.cs">
+      <DependentUpon>DrawRect.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="MulCombox.xaml.cs">
+      <DependentUpon>MulCombox.xaml</DependentUpon>
+    </Compile>
     <Compile Include="PathDraw\UCNode.xaml.cs">
       <DependentUpon>UCNode.xaml</DependentUpon>
     </Compile>
@@ -104,6 +110,9 @@
     </Compile>
     <Compile Include="UCGridControl.xaml.cs">
       <DependentUpon>UCGridControl.xaml</DependentUpon>
+    </Compile>
+    <Compile Include="UCRectBorder.xaml.cs">
+      <DependentUpon>UCRectBorder.xaml</DependentUpon>
     </Compile>
     <Compile Include="UCSlider.xaml.cs">
       <DependentUpon>UCSlider.xaml</DependentUpon>
@@ -137,6 +146,10 @@
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
+    <Page Include="DrawRect.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="MainWindow.xaml">
       <Generator>MSBuild:Compile</Generator>
       <SubType>Designer</SubType>
@@ -158,6 +171,10 @@
       <DependentUpon>MainWindow.xaml</DependentUpon>
       <SubType>Code</SubType>
     </Compile>
+    <Page Include="MulCombox.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
     <Page Include="PathDraw\UCNode.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
@@ -179,6 +196,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UCGridControl.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UCRectBorder.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
