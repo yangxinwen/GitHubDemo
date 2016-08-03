@@ -16,8 +16,8 @@
         >
         <Button Content="add"  Click="Button_Click" Canvas.Left="94" Canvas.Top="71"/>
 
-        <local:UCRectBorder 
-            x:Name="ucRect"
-            StartPoint="100,10"  EndPoint="200,200"/>
+        <!--<local:UCRectBorder 
+            x:Name="selectedRect"
+            StartPoint="100,10"  EndPoint="200,200"/>-->
     </Canvas>
 </UserControl>

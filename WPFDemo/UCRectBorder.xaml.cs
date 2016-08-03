@@ -90,7 +90,11 @@ namespace WPFDemo
         private void UserControl_MouseMove(object sender, MouseEventArgs e)
         {
             if (!IsSelected)
+            {
+                this.Cursor = Cursors.Arrow;
                 return;
+            }
+
             //编辑模式时设置鼠标状态
             var point = e.GetPosition(this);
             var range = 5; //范围点距离
@@ -108,13 +112,6 @@ namespace WPFDemo
             else
                 this.Cursor = Cursors.SizeAll;
         }
-
-        private void UserControl_MouseDoubleClick(object sender, MouseButtonEventArgs e)
-        {
-            IsSelected = !IsSelected;
-
-        }
-
 
         private void AutoConvertPoint()
         {
