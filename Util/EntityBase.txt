@@ -1,0 +1,308 @@
+﻿using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+using System.Reflection;
+using System.Data;
+using System.Collections;
+
+namespace Util
+{    
+    /// <summary>
+    /// 实体基类
+    /// </summary>
+    /// <typeparam name="T"></typeparam>
+    public class EntityBase<T> where T : class
+    {
+        /// <summary>
+        /// 表名
+        /// </summary>
+        public string TableName { get; set; }
+        /// <summary>
+        /// 主键
+        /// </summary>
+        public string TableId { get; set; }
+
+
+        private EntityBase<T> currentBizEntities;
+
+
+        public EntityBase()
+        {
+            currentBizEntities = new EntityBase<T>();
+        }
+
+        /// <summary>
+        /// 获取数据库实体上下文
+        /// </summary>
+        /// <param name="autoClose">是否自动关闭</param>
+        /// <returns></returns>
+        protected DB GetContext(bool autoClose = false)
+        {
+            return currentBizEntities.GetEntityContext(autoClose);
+        }
+        /// <summary>
+        /// 处理异常
+        /// </summary>
+        /// <param name="msg"></param>
+        /// <param name="ex"></param>
+        protected void HandleException(OutputMessage msg, Exception ex)
+        {
+            currentBizEntities.HandleException(msg, ex);
+        }
+
+
+        /// <summary>
+        /// 添加一个实体
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public virtual TResult<bool> Add(T entity)
+        {
+            var result = new TResult<bool>();
+            try
+            {
+                using (ZKVMSEntities context = GetContext())
+                {
+                    var entitySet = context.Set<T>();
+                    entitySet.Add(entity);
+                    result.Data = context.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.HandleException(result.OutputMessage, ex);
+            }
+            return result;
+        }
+
+        /// <summary>
+        /// 添加多个实体
+        /// </summary>
+        /// <param name="entity"></param>
+        /// <returns></returns>
+        public virtual TResult<bool> AddList(List<T> entity)
+        {
+            var result = new TResult<bool>();
+            try
+            {
+                using (ZKVMSEntities context = GetContext())
+                {
+                    var entitySet = context.Set<T>();
+                    entitySet.AddRange(entity);
+                    result.Data = context.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.HandleException(result.OutputMessage, ex);
+            }
+            return result;
+        }
+
+        public virtual TResult<bool> Delete(Func<T, bool> predicate)
+        {
+            var result = new TResult<bool>();
+            try
+            {
+                using (ZKVMSEntities context = GetContext())
+                {
+                    var entitySet = context.Set<T>();
+
+                    var list = entitySet.Where(predicate).ToList();
+                    if (list == null || list.Count() <= 0) throw new Exception("删除的对象不存在");
+                    entitySet.RemoveRange(list);
+                    result.Data = context.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.HandleException(result.OutputMessage, ex);
+            }
+            return result;
+        }
+
+        public virtual TResult<bool> Update(T entity)
+        {
+            var result = new TResult<bool>();
+            try
+            {
+                var propertyList = typeof(T).GetProperties().ToList();
+                var idProperty = propertyList.FirstOrDefault(a => a.Name.Equals(TableId));
+                if (idProperty == null)
+                    throw new Exception("找不到表主键，请设置正确的TableId");
+                var objId = idProperty.GetValue(entity);
+                int id = (int)objId;
+
+                using (ZKVMSEntities context = GetContext())
+                {
+                    var entitySet = context.Set<T>();
+
+                    //通过主键获取对象
+                    var old = entitySet.Find(id);
+                    if (old == null)
+                        throw new Exception("通过主键找不到需要修改的对象,请检测主键");
+
+                    //old = entitySet.FirstOrDefault(a=>a.==old);
+                    //使用反射更新对象
+                    foreach (var item in propertyList)
+                    {
+                        //不需要替换id
+                        if (TableId.Equals(item.Name))
+                            continue;
+                        var newValue = item.GetValue(entity);
+                        item.SetValue(old, newValue, null);
+                    }
+
+                    result.Data = context.SaveChanges() > 0;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.HandleException(result.OutputMessage, ex);
+            }
+            return result;
+        }
+
+        public virtual TResult<T> GetData(Func<T, bool> predicate)
+        {
+            var result = new TResult<T>();
+            try
+            {
+                using (ZKVMSEntities context = GetContext())
+                {
+                    var entitySet = context.Set<T>();
+
+                    var data = entitySet.FirstOrDefault(predicate);
+                    if (data == null) throw new Exception("找不到该对象");
+                    result.Data = data;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.HandleException(result.OutputMessage, ex);
+            }
+            return result;
+        }
+
+        public virtual TResult<List<T>> GetList(Func<T, bool> predicate)
+        {
+            var result = new TResult<List<T>>();
+            try
+            {
+                using (ZKVMSEntities context = GetContext())
+                {
+                    var entitySet = context.Set<T>();
+                    var list = entitySet.Where(predicate).ToList();
+                    result.Data = list;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.HandleException(result.OutputMessage, ex);
+            }
+            return result;
+        }
+
+        public virtual TResult<List<T>> GetAllData()
+        {
+            var result = new TResult<List<T>>();
+            try
+            {
+                using (ZKVMSEntities context = GetContext())
+                {
+                    var entitySet = context.Set<T>();
+                    var list = entitySet.ToList();
+                    result.Data = list;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.HandleException(result.OutputMessage, ex);
+            }
+            return result;
+        }
+        /// <summary>
+        /// 分页查询
+        /// </summary>
+        /// <param name="param"></param>
+        /// <param name="predicate">过滤条件</param>
+        /// <param name="keySelector">排序字段</param>
+        /// <returns></returns>
+        public virtual TResult<PagerResult> GetSearchData(PagerParameter param, Func<T, bool> predicate, Func<T, string> keySelector)
+        {
+            var result = new TResult<PagerResult>();
+            try
+            {
+                using (ZKVMSEntities context = GetContext())
+                {
+                    var entitySet = context.Set<T>();
+
+                    int curPage = param.CurrentPage; //当前页
+                    int sizePage = param.PageSize; //每一页的记录数
+                    int totalPage = 1; //总页面
+                    int totalRecord = 0; //总记录数
+
+                    totalRecord = entitySet.Count(predicate);
+                    //获得总页数
+                    if (sizePage <= 0) sizePage = 1; //默认每页至少一条数据
+                    totalPage = totalRecord / sizePage;
+                    if (totalRecord % sizePage > 0)
+                        totalPage++;
+
+                    var list = entitySet.Where(predicate).OrderBy(keySelector).Skip((curPage - 1) * sizePage).Take(sizePage);
+                    
+
+                    var pager = new PagerResult();
+                    pager.TotalPage = totalPage;
+                    pager.TotalRecord = totalRecord;
+
+                    DataTable dt = ToDataTable(list);
+                    pager.Data = DataRecordSerializer.DoSerialize(dt);
+                    result.Data = pager;
+                }
+            }
+            catch (Exception ex)
+            {
+                this.HandleException(result.OutputMessage, ex);
+            }
+            return result;
+        }
+
+        public static DataTable ToDataTable<T1>(IEnumerable<T1> collection)
+        {
+            DateTime oldtime = DateTime.Now;
+
+            var props = typeof(T1).GetProperties();
+            var dt = new DataTable();
+
+            foreach (var item in props)
+            {
+                if ((item.PropertyType.IsGenericType) && (item.PropertyType.GetGenericTypeDefinition() == typeof(Nullable<>)))
+                    dt.Columns.Add(new DataColumn(item.Name, item.PropertyType.GetGenericArguments()[0]));
+                else
+                    dt.Columns.Add(new DataColumn(item.Name, item.PropertyType));
+            }
+            System.Diagnostics.Debug.WriteLine((DateTime.Now - oldtime).TotalMilliseconds);
+            //dt.Columns.AddRange(props.Select(p => new DataColumn(p.Name, p.PropertyType.)).ToArray());
+            if (collection.Count() > 0)
+            {
+                for (int i = 0; i < collection.Count(); i++)
+                {
+                    DataRow dr = dt.NewRow();
+                    foreach (PropertyInfo pi in props)
+                    {
+                        dr[pi.Name] = pi.GetValue(collection.ElementAt(i), null) == null ? DBNull.Value : pi.GetValue(collection.ElementAt(i), null);
+                    }
+
+                    dt.Rows.Add(dr);
+                }
+            }
+
+            System.Diagnostics.Debug.WriteLine((DateTime.Now - oldtime).TotalMilliseconds);
+            return dt;
+        }
+
+    }
+}
