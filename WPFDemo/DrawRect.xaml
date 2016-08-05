@@ -10,6 +10,7 @@
     <Canvas
         MouseLeftButtonDown="Canvas_MouseLeftButtonDown"
         MouseLeftButtonUp="Canvas_MouseLeftButtonUp"
+        MouseRightButtonUp="canvasPanel_MouseRightButtonUp"
         MouseMove="Canvas_MouseMove"
         x:Name="canvasPanel"
         Background="Gray"

@@ -348,6 +348,7 @@ namespace WPFDemo
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            //右击取消新建操作
             _isAdd = true;
         }
 
@@ -359,6 +360,11 @@ namespace WPFDemo
         private void ucRect_MouseMove(object sender, MouseEventArgs e)
         {
 
+        }
+
+        private void canvasPanel_MouseRightButtonUp(object sender, MouseButtonEventArgs e)
+        {
+            _isAdd = false;
         }
     }
 

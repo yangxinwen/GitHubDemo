@@ -3,6 +3,8 @@ using System.Collections.Generic;
 using System.Diagnostics;
 using System.Linq;
 using System.Text;
+using System.Threading;
+using System.Threading.Tasks;
 using System.Windows;
 using System.Windows.Controls;
 using System.Windows.Data;
@@ -709,16 +711,122 @@ namespace WPFDemo.PathDraw
 
         private void MenuItem_Click(object sender, RoutedEventArgs e)
         {
-            if (SelectedNodeBorder != null && SelectedNodeBorder.IsSelected == true)
+            var ele = sender as FrameworkElement;
+            if (ele == null || ele.Tag == null) return;
+            if (ele.Tag.Equals("del"))
             {
-                RemoveNode(SelectedNodeBorder);
-                SelectedNodeBorder = null;
+                if (SelectedNodeBorder != null && SelectedNodeBorder.IsSelected == true)
+                {
+                    RemoveNode(SelectedNodeBorder);
+                    SelectedNodeBorder = null;
+                }
+                else if (SelectedRunLine != null && SelectedRunLine.IsSelected == true)
+                {
+                    RemoveLine(SelectedRunLine);
+                    SelectedRunLine = null;
+                }
             }
-            else if (SelectedRunLine != null && SelectedRunLine.IsSelected == true)
+            else if (ele.Tag.Equals("test"))
             {
-                RemoveLine(SelectedRunLine);
-                SelectedRunLine = null;
+                for (int i = 0; i < 10; i++)
+                {
+                    StartTest();
+                }
+
             }
+        }
+        
+        public void StartTest()
+        {
+            Random random = new Random((int)DateTime.Now.Ticks);
+            ContainerTruckDot dot;
+            dot = new ContainerTruckDot();
+            canvasPanel.Children.Add(dot);
+
+            var line = runLineDic.ElementAt(random.Next(runLineDic.Count)).Value;
+            var startNode = nodeDic.FirstOrDefault(a => a.Value.Equals(line.StartNode)).Key;
+            var endNode = nodeDic.FirstOrDefault(a => a.Value.Equals(line.EndNode)).Key;
+            var startP = new Point(startNode.X, startNode.Y);
+            var endP = new Point(endNode.X, endNode.Y);
+
+            Task.Factory.StartNew(() =>
+            {
+
+
+
+
+                int count = 1000;
+
+                var xleng = (endP.X - startP.X) / count;
+                var yleng = (endP.Y - startP.Y) / count;
+
+                for (int i = 0; i < count; i++)
+                {
+                    this.Dispatcher.Invoke(new Action(() =>
+                    {
+                        dot.X = startP.X + xleng * i; //- dot.ActualWidth / 2;
+                        dot.Y = startP.Y + yleng * i;// - dot.ActualHeight / 2;
+                    }));
+                    Thread.Sleep(1 * 10);
+                }
+                this.Dispatcher.Invoke(new Action(() =>
+                {
+                    canvasPanel.Children.Remove(dot);
+                }));
+            });
+        }
+
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            var nodes = nodeDic.Values.ToList();
+            int nodeCount = nodeDic.Count;
+            double[,] data = new double[nodeCount, nodeCount];
+            for (int i = 0; i < nodeCount; i++)
+            {
+                for (int j = 0; j < nodeCount; j++)
+                {
+                    data[i, j] = 0;
+                }
+            }
+
+            int startIndex, endIndex;
+            foreach (var item in runLineDic.Values)
+            {
+                startIndex = nodes.IndexOf(item.StartNode);
+                endIndex = nodes.IndexOf(item.EndNode);
+                var lenght = runLineDic.FirstOrDefault(a => a.Value.Equals(item)).Key.Width;
+                lenght = Math.Floor(lenght);
+                if (item.RunDirection == 0)
+                {//正向
+                    data[startIndex, endIndex] = lenght;
+                }
+                else if (item.RunDirection == 1)
+                {//反向
+
+                    data[endIndex, startIndex] = lenght;
+                }
+                else if (item.RunDirection == 2)
+                {//双向
+                    data[startIndex, endIndex] = lenght;
+                    data[endIndex, startIndex] = lenght;
+                }
+            }
+
+            for (int i = 0; i < nodeCount; i++)
+            {
+                Debug.Write(nodes[i].Name + ":\t");
+                for (int j = 0; j < nodeCount; j++)
+                {
+                    Debug.Write(data[i, j] + "\t");
+                }
+                Debug.WriteLine("");
+            }
+
+
+
+            var floyd = new Util.Floyd();
+            floyd.MakePath(data);
+            
         }
     }
 

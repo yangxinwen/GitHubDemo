@@ -29,6 +29,11 @@
                                           ToolTip="行驶路线"/>
                     </ListViewItem.Content>
                 </ListViewItem>
+                <ListViewItem  Margin="5" HorizontalAlignment="Center">
+                    <ListViewItem.Content>
+                        <Button Content="Test" Click="Button_Click"/>
+                    </ListViewItem.Content>
+                </ListViewItem>
             </ListView>
         </Grid>
 
@@ -104,7 +109,8 @@
                     >
                 <Canvas.ContextMenu>
                     <ContextMenu>
-                        <MenuItem Header="删除当前选择项" Click="MenuItem_Click"/>
+                        <MenuItem Header="删除当前选择项" Tag="del" Click="MenuItem_Click"/>
+                        <MenuItem Header="启动测试" Tag="test" Click="MenuItem_Click"/>
                     </ContextMenu>
                 </Canvas.ContextMenu>
             </Canvas>

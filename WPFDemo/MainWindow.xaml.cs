@@ -31,17 +31,17 @@ namespace WPFDemo
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
         {
-            //Task.Factory.StartNew(() =>
-            //{
-            //    Thread.Sleep(1 * 10);
-            //    this.Dispatcher.Invoke(new Action(() => { ps.OptimizeAllLine(); }));
+            Task.Factory.StartNew(() =>
+            {
+                Thread.Sleep(1 * 10);
+                this.Dispatcher.Invoke(new Action(() => { ps.OptimizeAllLine(); }));
 
-            //});
+            });
         }
 
         private void Window_Closed(object sender, EventArgs e)
         {
-            //ps.SaveData();
+            ps.SaveData();
         }
 
         //private void canvas_MouseMove(object sender, MouseEventArgs e)

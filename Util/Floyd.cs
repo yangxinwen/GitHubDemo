@@ -7,21 +7,21 @@ using System.Text;
 namespace Util
 {
     //以无向图G为入口，得出任意两点之间的路径长度length[i][j]，路径path[i][j][k]，
-    //途中无连接得点距离用0表示，点自身也用0表示
+    //途中无连接的点距离用0表示，点自身也用0表示
     public class Floyd
     {
-        int[,] length = null;// 任意两点之间路径长度
-        int[,,] path = null;// 任意两点之间的路径
+        double[,] length = null;// 任意两点之间路径长度
+        double[,,] path = null;// 任意两点之间的路径
 
         public Floyd() { }
 
-        public Floyd(int[,] G)
+        public Floyd(double[,] G)
         {
             int max = 100; int row = G.GetUpperBound(0) + 1;// 图G的行数
             int[,] spot = new int[row, row];// 定义任意两点之间经过的点
             int[] onePath = new int[row];// 记录一条路径
-            length = new int[row, row];
-            path = new int[row, row, row];
+            length = new double[row, row];
+            path = new double[row, row, row];
             for (int i = 0; i < row; i++)// 处理图两点之间的路径
                 for (int j = 0; j < row; j++)
                 {
@@ -70,6 +70,26 @@ namespace Util
             }
         }
 
+        /// <summary>
+        /// 生成路径
+        /// </summary>
+        /// <param name="data"></param>
+        public void MakePath(double[,] data)
+        {
+
+            Floyd test = new Floyd(data);
+            for (int i = 0; i <= data.GetUpperBound(0); i++)
+                for (int j = 0; j <= data.GetUpperBound(0); j++)
+                {
+                    Debug.WriteLine("");
+                    Debug.Write("From " + i + " to " + j + " path is: ");
+                    for (int k = 0; k <= test.path.GetUpperBound(2); k++)
+                        Debug.Write(test.path[i, j, k] + 1 + " ");
+                    Debug.WriteLine("");
+                    Debug.WriteLine("From " + i + " to " + j + " length :" + test.length[i, j]);
+                }
+        }
+
 
         public void Test()
         {
@@ -105,7 +125,7 @@ namespace Util
             //                };
 
 
-            int[,] data = new int[,] {
+            double[,] data = new double[,] {
                             { 0,2,0,0,0,0,0,0,0,0 },// x1
                             { 0,0,3,0,0,0,0,0,0,0 },// 1
                             { 0,3,1,0,0,0,0,0,0,1 },// 2

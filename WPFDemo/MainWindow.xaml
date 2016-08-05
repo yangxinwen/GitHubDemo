@@ -12,11 +12,11 @@
     <Grid x:Name="grid">
         <!--<local:BayViewCanvas x:Name="bayView"/>-->
         <!--<local:TruckTracking/>-->
-        <!--<pathDraw:PathSet x:Name="ps"/>-->
+        <pathDraw:PathSet x:Name="ps"/>
         <!--<Grid x:Name="canvas"  Background="Green">
             <pathDraw:RunLine  x:Name="line"  IsSelected="True" >              
             </pathDraw:RunLine>
         </Grid>-->
-        <local:DrawRect/>
+        <!--<local:DrawRect/>-->
     </Grid>
 </Window>
