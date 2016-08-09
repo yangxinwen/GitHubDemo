@@ -14,6 +14,7 @@ using System.Windows.Media;
 using System.Windows.Media.Imaging;
 using System.Windows.Navigation;
 using System.Windows.Shapes;
+using Util;
 
 namespace WPFDemo.PathDraw
 {
@@ -778,6 +779,72 @@ namespace WPFDemo.PathDraw
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
+            TestConvertGraph();
+
+
+        }
+        /// <summary>
+        /// 使用深度优先算法
+        /// </summary>
+        private void TestConvertGraph()
+        {
+            var nodes = nodeDic.Values.ToList();
+            int nodeCount = nodeDic.Count;
+
+
+            //转换graph结构
+            var graph = new Graph(nodeCount);
+            foreach (var item in nodes)
+            {
+                graph.AddVertex(item.Name);
+            }
+
+
+            int startIndex, endIndex;
+            foreach (var item in runLineDic.Values)
+            {
+                startIndex = nodes.IndexOf(item.StartNode);
+                endIndex = nodes.IndexOf(item.EndNode);
+                //边权重
+                var lenght = runLineDic.FirstOrDefault(a => a.Value.Equals(item)).Key.Width;
+                lenght = Math.Floor(lenght);
+                if (item.RunDirection == 0)
+                {//正向
+                    graph.AddEdge(startIndex, endIndex); //= lenght;
+                }
+                else if (item.RunDirection == 1)
+                {//反向
+
+                    graph.AddEdge(endIndex, startIndex);
+                }
+                else if (item.RunDirection == 2)
+                {//双向
+                    graph.AddEdge(startIndex, endIndex); //= lenght;
+                    graph.AddEdge(endIndex, startIndex);
+                }
+            }
+
+            string startNode = "节点3";
+            string endNode = "节点2";
+            startIndex = nodes.IndexOf(nodes.FirstOrDefault(a => a.Name.Equals(startNode)));
+            endIndex = nodes.IndexOf(nodes.FirstOrDefault(a => a.Name.Equals(endNode)));
+
+
+
+            var operation = new DFS();
+            operation.GetResult(graph, startIndex, endIndex);
+
+
+            var list = operation.ResultList;
+
+
+        }
+
+        /// <summary>
+        /// 使用floyd
+        /// </summary>
+        private void TestConvertFloyd()
+        {
             var nodes = nodeDic.Values.ToList();
             int nodeCount = nodeDic.Count;
             double[,] data = new double[nodeCount, nodeCount];
@@ -826,7 +893,6 @@ namespace WPFDemo.PathDraw
 
             var floyd = new Util.Floyd();
             floyd.MakePath(data);
-            
         }
     }
 

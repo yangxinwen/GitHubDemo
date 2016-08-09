@@ -48,6 +48,7 @@
     <Compile Include="Base64.cs" />
     <Content Include="EntityBase.txt" />
     <Compile Include="Floyd.cs" />
+    <Compile Include="Graph.cs" />
     <Compile Include="HttpProxy.cs" />
     <Compile Include="Socks5Proxy.cs" />
     <Compile Include="Util.cs" />

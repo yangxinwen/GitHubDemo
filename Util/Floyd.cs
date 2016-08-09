@@ -10,14 +10,21 @@ namespace Util
     //途中无连接的点距离用0表示，点自身也用0表示
     public class Floyd
     {
-        double[,] length = null;// 任意两点之间路径长度
-        double[,,] path = null;// 任意两点之间的路径
+        /// <summary>
+        /// 任意两点之间路径长度
+        /// </summary>
+        private double[,] length = null;
+        /// <summary>
+        /// 任意两点之间的路径
+        /// </summary>
+        private double[,,] path = null;
 
         public Floyd() { }
 
-        public Floyd(double[,] G)
+        public Floyd(double[,] g)
         {
-            int max = 100; int row = G.GetUpperBound(0) + 1;// 图G的行数
+            int max = int.MaxValue;
+            int row = g.GetUpperBound(0) + 1;// 图G的行数
             int[,] spot = new int[row, row];// 定义任意两点之间经过的点
             int[] onePath = new int[row];// 记录一条路径
             length = new double[row, row];
@@ -25,24 +32,29 @@ namespace Util
             for (int i = 0; i < row; i++)// 处理图两点之间的路径
                 for (int j = 0; j < row; j++)
                 {
-                    if (G[i, j] == 0) G[i, j] = max;// 没有路径的两个点之间的路径为默认最大
-                    if (i == j) G[i, j] = 0;// 本身的路径长度为0
+                    if (g[i, j] == 0) g[i, j] = max;// 没有路径的两个点之间的路径为默认最大
+                    if (i == j) g[i, j] = 0;// 本身的路径长度为0
                 }
+
             for (int i = 0; i < row; i++)// 初始化为任意两点之间没有路径
                 for (int j = 0; j < row; j++)
                     spot[i, j] = -1;
+
             for (int i = 0; i < row; i++)// 假设任意两点之间的没有路径
                 onePath[i] = -1;
-            for (int v = 0; v < row; ++v)
-                for (int w = 0; w < row; ++w)
-                    length[v, w] = G[v, w];
-            for (int u = 0; u < row; ++u)
-                for (int v = 0; v < row; ++v)
-                    for (int w = 0; w < row; ++w)
-                        if (length[v, w] > length[v, u] + length[u, w])
+
+            for (int i = 0; i < row; ++i)
+                for (int j = 0; j < row; ++j)
+                    length[i, j] = g[i, j];
+
+            //Floyd-Warshall算法核心(a->k->b) 
+                for (int i = 0; i < row; ++i)
+                    for (int j = 0; j < row; ++j)
+                    for (int k = 0; k < row; ++k)
+                        if (length[i, j] > length[i, k] + length[k, j])
                         {
-                            length[v, w] = length[v, u] + length[u, w];// 如果存在更短路径则取更短路径
-                            spot[v, w] = u;// 把经过的点加入
+                            length[i, j] = length[i, k] + length[k, j];// 如果存在更短路径则取更短路径
+                            spot[i, j] = k;// 把经过的点加入
                         }
             for (int i = 0; i < row; i++)
             {// 求出所有的路径
