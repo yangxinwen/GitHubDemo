@@ -78,7 +78,7 @@ namespace WPFDemo.PathDraw
             //border.SetValue(Canvas.LeftProperty, centerPoint.X - 2.5);
             //border.SetValue(Canvas.TopProperty, centerPoint.Y + 5);
 
-
+            
 
             var runLine = new UCLine();
             runLine.Height = 15;

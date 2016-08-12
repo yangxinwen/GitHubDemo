@@ -117,6 +117,9 @@
     <Compile Include="UCSlider.xaml.cs">
       <DependentUpon>UCSlider.xaml</DependentUpon>
     </Compile>
+    <Compile Include="UCTurnAngle.xaml.cs">
+      <DependentUpon>UCTurnAngle.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkTask.xaml.cs">
       <DependentUpon>WorkTask.xaml</DependentUpon>
     </Compile>
@@ -204,6 +207,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UCSlider.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="UCTurnAngle.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
