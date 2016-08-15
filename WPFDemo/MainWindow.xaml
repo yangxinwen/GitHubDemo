@@ -10,14 +10,10 @@
         Closed="Window_Closed"
         Title="MainWindow">
     <Grid x:Name="grid">
-        <local:UCTurnAngle />
+        <!--<local:UCTurnAngle />-->
         <!--<local:BayViewCanvas x:Name="bayView"/>-->
         <!--<local:TruckTracking/>-->
-        <!--<pathDraw:PathSet x:Name="ps"/>-->
-        <!--<Grid x:Name="canvas"  Background="Green">
-            <pathDraw:RunLine  x:Name="line"  IsSelected="True" >              
-            </pathDraw:RunLine>
-        </Grid>-->
-        <!--<local:DrawRect/>-->
+        <!--<pathDraw:PathSet x:Name="ps"/>-->  
+        <local:DrawRect/>
     </Grid>
 </Window>

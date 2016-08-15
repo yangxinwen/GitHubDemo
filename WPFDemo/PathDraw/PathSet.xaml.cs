@@ -411,7 +411,7 @@ namespace WPFDemo.PathDraw
         private void AutoOptimizeLine(UCLine line)
         {
             var startNode = nodeDic.FirstOrDefault(a => a.Value.Name.Equals(GetRunLine(line).StartNode.Name)).Key;
-            var endNode = nodeDic.FirstOrDefault(a => a.Value.Name.Equals(GetRunLine(line).EndNode.Name)).Key;
+            var endNode = nodeDic.FirstOrDefault(a => GetRunLine(line).EndNode != null && a.Value.Name.Equals(GetRunLine(line).EndNode.Name)).Key;
 
             if (startNode == null || endNode == null) return;
             line.StartPoint = GetConnectPoint(startNode, endNode.CircleCenterPoint);
@@ -736,7 +736,7 @@ namespace WPFDemo.PathDraw
 
             }
         }
-        
+
         public void StartTest()
         {
             Random random = new Random((int)DateTime.Now.Ticks);

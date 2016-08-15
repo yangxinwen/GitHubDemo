@@ -25,7 +25,7 @@
                 </ListViewItem>
                 <ListViewItem  Margin="5" HorizontalAlignment="Center">
                     <ListViewItem.Content>
-                        <pathDraw:UCLine Width="30" Height="10" IsShowEndArrow="True"
+                        <pathDraw:UCLine Width="30" Height="12" IsShowEndArrow="True"
                                           ToolTip="行驶路线"/>
                     </ListViewItem.Content>
                 </ListViewItem>
