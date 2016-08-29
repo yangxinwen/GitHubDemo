@@ -1,11 +1,13 @@
-﻿<Window x:Class="WPFDemo.MainWindow"
+﻿<Window
         xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
         xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
         xmlns:d="http://schemas.microsoft.com/expression/blend/2008"
         xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006"
              xmlns:dxg="http://schemas.devexpress.com/winfx/2008/xaml/grid" 
-        xmlns:local="clr-namespace:WPFDemo"
+        xmlns:local="clr-namespace:WPFDemo" 
+        xmlns:control="clr-namespace:WPFDemo.Controls"
         xmlns:pathDraw="clr-namespace:WPFDemo.PathDraw"
+        x:Class="WPFDemo.MainWindow"
         mc:Ignorable="d"
         Closed="Window_Closed"
         Title="MainWindow">
@@ -13,7 +15,18 @@
         <!--<local:UCTurnAngle />-->
         <!--<local:BayViewCanvas x:Name="bayView"/>-->
         <!--<local:TruckTracking/>-->
-        <!--<pathDraw:PathSet x:Name="ps"/>-->  
-        <local:DrawRect/>
+        <!--<pathDraw:PathSet x:Name="ps"/>-->
+        <!--<local:DrawRect/>-->
+
+        <Button  Content="test" Width="100" Height="20" x:Name="btn">
+            <Button.ToolTip>
+                <control:UCToolTip Placement="Top"   Content="sdfg是打发阿斯蒂芬撒地方dsf撒地方fsdf"/>
+            </Button.ToolTip>
+        </Button>
+
+
+        <!--<Path Data="M0,5 C0,2.5 2.5,0 5,0 L95,0 C97.5,0 100,2.5 100,5 L100,25 C100,27.5 97.5,30 95,30 L55,30 50,40 45,30 L5,30 C2.5,30 0,27.5 0,25 z" 
+              Fill="#FF84A281" HorizontalAlignment="Left" Height="90" Margin="0" Stretch="Fill" Stroke="White" VerticalAlignment="Top" Width="100"/>-->
+    
     </Grid>
 </Window>

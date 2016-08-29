@@ -87,6 +87,9 @@
     <Compile Include="ContainerTruckDot.xaml.cs">
       <DependentUpon>ContainerTruckDot.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\AutoFilteredComboBox.cs" />
+    <Compile Include="Controls\UCText.cs" />
+    <Compile Include="Controls\UCToolTip.cs" />
     <Compile Include="DrawRect.xaml.cs">
       <DependentUpon>DrawRect.xaml</DependentUpon>
     </Compile>
@@ -191,6 +194,14 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PathDraw\TestCircle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\ToolTip.xaml">
+      <Generator>MSBuild:Compile</Generator>
+      <SubType>Designer</SubType>
+    </Page>
+    <Page Include="Themes\General.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -26,7 +26,11 @@ namespace WPFDemo
         public MainWindow()
         {
             InitializeComponent();
-            this.Loaded += MainWindow_Loaded;            
+            this.Loaded += MainWindow_Loaded;
+
+
+            Debug.WriteLine("sdfsdfsdf");
+
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -37,6 +41,10 @@ namespace WPFDemo
             //    this.Dispatcher.Invoke(new Action(() => { ps.OptimizeAllLine(); }));
 
             //});
+
+
+
+            //btn.ToolTip = new Controls.UCToolTip() { Content = (new Button() { Content = "sdfdfs" }) };
         }
 
         private void Window_Closed(object sender, EventArgs e)
