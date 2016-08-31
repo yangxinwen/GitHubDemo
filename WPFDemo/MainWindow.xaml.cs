@@ -26,8 +26,7 @@ namespace WPFDemo
         public MainWindow()
         {
             InitializeComponent();
-            this.Loaded += MainWindow_Loaded;
-
+            this.Loaded += MainWindow_Loaded;            
 
             Debug.WriteLine("sdfsdfsdf");
 

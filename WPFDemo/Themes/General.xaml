@@ -2,5 +2,6 @@
 
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo;component/Themes/ToolTip.xaml" />
+        <ResourceDictionary Source="/WPFDemo;component/Themes/Button.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>
