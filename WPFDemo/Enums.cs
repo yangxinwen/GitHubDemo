@@ -39,7 +39,7 @@ namespace WPFDemo
         /// <summary>
         /// 自定义
         /// </summary>
-        //Custom,
+        Custom,
         /// <summary>
         /// 小
         /// </summary>

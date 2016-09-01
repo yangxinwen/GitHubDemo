@@ -89,6 +89,9 @@
     </Compile>
     <Compile Include="Controls\AutoFilteredComboBox.cs" />
     <Compile Include="Controls\UCButton.cs" />
+    <Compile Include="Controls\UCPager.xaml.cs">
+      <DependentUpon>UCPager.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\UCText.cs" />
     <Compile Include="Controls\UCToolTip.cs" />
     <Compile Include="DrawRect.xaml.cs">
@@ -151,6 +154,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ContainerTruck.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\UCPager.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

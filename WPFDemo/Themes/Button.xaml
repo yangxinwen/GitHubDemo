@@ -52,7 +52,10 @@
                             <Setter TargetName="tb" Property="Foreground" Value="#5E5E5E"/>
                         </Trigger>
 
-
+                        <!--<Trigger Property="ButtonSizeType" Value="Custom">
+                            <Setter Property="Width" Value="{TemplateBinding Width}"/>
+                            <Setter Property="Height" Value="{Binding Height}"/>
+                        </Trigger>-->
                         <Trigger Property="ButtonSizeType" Value="Small">
                             <Setter Property="Width" Value="80"/>
                             <Setter Property="Height" Value="25"/>

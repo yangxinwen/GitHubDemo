@@ -1,0 +1,23 @@
+﻿<UserControl x:Class="WPFDemo.Controls.UCPager"
+             xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+             xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+             xmlns:mc="http://schemas.openxmlformats.org/markup-compatibility/2006" 
+             xmlns:d="http://schemas.microsoft.com/expression/blend/2008" 
+             xmlns:local="clr-namespace:WPFDemo.Controls"
+             mc:Ignorable="d" 
+             d:DesignHeight="25" d:DesignWidth="300">
+    <Grid>
+        <Grid.ColumnDefinitions>
+            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition/>
+            <ColumnDefinition Width="auto"/>
+        </Grid.ColumnDefinitions>
+
+        <Button Content="&lt;" x:Name="lastBtn" Click="lastBtn_Click" />
+        <Button Content=">" Grid.Column="2" x:Name="nextBtn" Click="nextBtn_Click"/>
+
+        <Grid x:Name="gridPageIndex" Grid.Column="1">
+            
+        </Grid>        
+    </Grid>
+</UserControl>
