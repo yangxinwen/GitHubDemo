@@ -181,6 +181,7 @@ namespace WPFDemo.Controls
             if (this.ItemsSource != null)
             {
                 ICollectionView view = CollectionViewSource.GetDefaultView(this.ItemsSource);
+                view.DeferRefresh();
                 view.Refresh();
                 this.IsDropDownOpen = true;
             }

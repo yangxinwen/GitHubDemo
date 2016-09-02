@@ -94,6 +94,9 @@
     </Compile>
     <Compile Include="Controls\UCText.cs" />
     <Compile Include="Controls\UCToolTip.cs" />
+    <Compile Include="Controls\WaitAnimation.xaml.cs">
+      <DependentUpon>WaitAnimation.xaml</DependentUpon>
+    </Compile>
     <Compile Include="DrawRect.xaml.cs">
       <DependentUpon>DrawRect.xaml</DependentUpon>
     </Compile>
@@ -158,6 +161,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Controls\UCPager.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Controls\WaitAnimation.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

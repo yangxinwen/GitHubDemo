@@ -4,11 +4,14 @@ using System.Linq;
 using System.Text;
 using System.Runtime.Serialization.Json;
 using System.IO;
+using System.Windows;
 
 namespace Util
 {
     public class Util
     {
+      
+
         /// <summary>
         /// 对象转换成json串
         /// </summary>

@@ -30,6 +30,22 @@ namespace WPFDemo
 
             Debug.WriteLine("sdfsdfsdf");
 
+
+            //var dic = new Dictionary<int, string>();
+
+            //for (int i = 0; i < 10000; i++)
+            //{
+            //    dic.Add(i, (i+1).ToString());
+            //}
+
+            //cbx.DisplayMemberPath = "Value";
+            //cbx.SelectedValuePath = "Key";
+            //cbx.ItemsSource = dic;
+
+
+
+
+
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)

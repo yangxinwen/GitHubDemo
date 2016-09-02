@@ -1,0 +1,8 @@
+﻿<ResourceDictionary xmlns="http://schemas.microsoft.com/winfx/2006/xaml/presentation"
+                    xmlns:x="http://schemas.microsoft.com/winfx/2006/xaml"
+                    xmlns:local="clr-namespace:WPF.UI.Styles.Assets">
+    <!--存放公共资源,可被当前目录下的其它资源共享-->
+
+
+
+</ResourceDictionary>
