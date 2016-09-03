@@ -88,6 +88,7 @@
       <DependentUpon>ContainerTruckDot.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\AutoFilteredComboBox.cs" />
+    <Compile Include="Controls\ItemsVirtualizingPanel.cs" />
     <Compile Include="Controls\UCText.cs" />
     <Compile Include="Controls\UCToolTip.cs" />
     <Compile Include="DrawRect.xaml.cs">

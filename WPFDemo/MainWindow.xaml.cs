@@ -45,6 +45,17 @@ namespace WPFDemo
 
 
             //btn.ToolTip = new Controls.UCToolTip() { Content = (new Button() { Content = "sdfdfs" }) };
+
+
+            var dic = new Dictionary<int, string>();
+            for (int i = 1; i < 100000; i++)
+            {
+                dic.Add(i, "test" + i);
+            }
+            cbx.DisplayMemberPath = "Value";
+            cbx.SelectedValuePath = "Key";
+            cbx.ItemsSource = dic;
+
         }
 
         private void Window_Closed(object sender, EventArgs e)
