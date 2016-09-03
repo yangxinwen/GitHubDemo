@@ -26,10 +26,25 @@ namespace WPFDemo
         public MainWindow()
         {
             InitializeComponent();
-            this.Loaded += MainWindow_Loaded;
-
+            this.Loaded += MainWindow_Loaded;            
 
             Debug.WriteLine("sdfsdfsdf");
+
+
+            //var dic = new Dictionary<int, string>();
+
+            //for (int i = 0; i < 10000; i++)
+            //{
+            //    dic.Add(i, (i+1).ToString());
+            //}
+
+            //cbx.DisplayMemberPath = "Value";
+            //cbx.SelectedValuePath = "Key";
+            //cbx.ItemsSource = dic;
+
+
+
+
 
         }
 
@@ -47,14 +62,14 @@ namespace WPFDemo
             //btn.ToolTip = new Controls.UCToolTip() { Content = (new Button() { Content = "sdfdfs" }) };
 
 
-            var dic = new Dictionary<int, string>();
-            for (int i = 1; i < 100000; i++)
-            {
-                dic.Add(i, "test" + i);
-            }
-            cbx.DisplayMemberPath = "Value";
-            cbx.SelectedValuePath = "Key";
-            cbx.ItemsSource = dic;
+            //var dic = new Dictionary<int, string>();
+            //for (int i = 1; i < 100000; i++)
+            //{
+            //    dic.Add(i, "test" + i);
+            //}
+            //cbx.DisplayMemberPath = "Value";
+            //cbx.SelectedValuePath = "Key";
+            //cbx.ItemsSource = dic;
 
         }
 
