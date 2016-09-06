@@ -4,5 +4,6 @@
     <ResourceDictionary.MergedDictionaries>
         <ResourceDictionary Source="/WPFDemo;component/Themes/ToolTip.xaml" />
         <ResourceDictionary Source="/WPFDemo;component/Themes/Button.xaml" />
+        <ResourceDictionary Source="/WPFDemo;component/Themes/UCBusy.xaml" />
     </ResourceDictionary.MergedDictionaries>
 </ResourceDictionary>

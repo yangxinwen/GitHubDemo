@@ -67,6 +67,11 @@ namespace WPFDemo
             //ps.SaveData();
         }
 
+        private void Button_Click(object sender, RoutedEventArgs e)
+        {
+            ucBusy.IsBusy = !ucBusy.IsBusy;
+        }
+
         //private void canvas_MouseMove(object sender, MouseEventArgs e)
         //{
         //    if (e.LeftButton == MouseButtonState.Pressed)
