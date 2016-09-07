@@ -26,7 +26,7 @@ namespace WPFDemo
         public MainWindow()
         {
             InitializeComponent();
-            this.Loaded += MainWindow_Loaded;            
+            this.Loaded += MainWindow_Loaded;
 
             Debug.WriteLine("sdfsdfsdf");
 
@@ -42,10 +42,16 @@ namespace WPFDemo
             //cbx.SelectedValuePath = "Key";
             //cbx.ItemsSource = dic;
 
+            //menu.StaysOpen = false;
 
+            //menu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
+            //menu.PlacementTarget = btn;
+            
+        }
 
-
-
+        private void Menu_Closed(object sender, RoutedEventArgs e)
+        {
+            Debug.WriteLine("sdfdsf");
         }
 
         private void MainWindow_Loaded(object sender, RoutedEventArgs e)
@@ -71,6 +77,8 @@ namespace WPFDemo
             //cbx.SelectedValuePath = "Key";
             //cbx.ItemsSource = dic;
 
+
+            var style= this.Resources.FindName("testsss") as Style;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -80,7 +88,26 @@ namespace WPFDemo
 
         private void Button_Click(object sender, RoutedEventArgs e)
         {
-            ucBusy.IsBusy = !ucBusy.IsBusy;
+            //menu.HorizontalOffset-=50;
+            //menu.IsOpen = !menu.IsOpen;
+        }
+
+        private void btn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+            //if (menu.IsOpen)
+            //    e.Handled = true;
+            //else
+               
+        }
+
+        private void Button_Click_1(object sender, RoutedEventArgs e)
+        {
+            sepBtn.Items.Add(new MenuItem() {Header="add1" });
+        }
+
+        private void sepBtn_Click(object sender, RoutedEventArgs e)
+        {
+            MessageBox.Show("test");
         }
 
         //private void canvas_MouseMove(object sender, MouseEventArgs e)

@@ -52,10 +52,10 @@
                             <Setter TargetName="tb" Property="Foreground" Value="#5E5E5E"/>
                         </Trigger>
 
-                        <!--<Trigger Property="ButtonSizeType" Value="Custom">
-                            <Setter Property="Width" Value="{TemplateBinding Width}"/>
-                            <Setter Property="Height" Value="{Binding Height}"/>
-                        </Trigger>-->
+                        <Trigger Property="ButtonSizeType" Value="Custom">
+                            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource AncestorType=Decorator},Path=Width}"/>
+                            <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource AncestorType=Decorator},Path=Height}"/>
+                        </Trigger>
                         <Trigger Property="ButtonSizeType" Value="Small">
                             <Setter Property="Width" Value="80"/>
                             <Setter Property="Height" Value="25"/>
@@ -79,7 +79,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="border" Property="Background" Value="#B9C3C8" />
                         </MultiTrigger>
-                        
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
@@ -87,7 +87,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="border" Property="Background" Value="#1B3148" />
                         </MultiTrigger>
-                        
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
@@ -95,7 +95,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="border" Property="Background" Value="#FAA652" />
                         </MultiTrigger>
-                        
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
@@ -103,7 +103,7 @@
                             </MultiTrigger.Conditions>
                             <Setter TargetName="border" Property="Background" Value="#F14D4D" />
                         </MultiTrigger>
-                        
+
                         <MultiTrigger>
                             <MultiTrigger.Conditions>
                                 <Condition Property="IsMouseOver" Value="True"/>
@@ -113,7 +113,7 @@
                         </MultiTrigger>
 
 
-                        <Trigger Property="IsPressed" Value="True">                       
+                        <Trigger Property="IsPressed" Value="True">
                             <Setter Property="Margin" TargetName="border" Value="1"/>
                         </Trigger>
 
@@ -124,10 +124,122 @@
                         <!--<Trigger Property="ToggleButton.IsChecked" Value="True">
                             <Setter Property="Background" TargetName="border" Value="#FFBCDDEE"/>
                             <Setter Property="BorderBrush" TargetName="border" Value="#FF245A83"/>
-                        </Trigger>-->              
+                        </Trigger>-->
                     </ControlTemplate.Triggers>
                 </ControlTemplate>
             </Setter.Value>
         </Setter>
     </Style>
+
+    <Style TargetType="{x:Type controls:UCSepButton}">
+        <Setter Property="CornerRadius" Value="5"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type controls:UCSepButton}">
+                    <Grid>
+                        <Grid.ColumnDefinitions>
+                            <ColumnDefinition Width="3*"/>
+                            <ColumnDefinition Width="auto"/>
+                            <ColumnDefinition Width="1*"/>
+                        </Grid.ColumnDefinitions>
+                        <controls:UCButton x:Name="PART_ContentButton"
+                                           ButtonType="{TemplateBinding ButtonType}"
+                                           ButtonSizeType="Custom"
+                                           Content="test"/>
+                        <Border Grid.Column="1" Width="0.68" Background="Transparent"/>
+                        <controls:UCButton x:Name="PART_DownButton"
+                                           ButtonType="{TemplateBinding ButtonType}"
+                                           ButtonSizeType="Custom"
+                              Grid.Column="2"                              
+                              Content="▼"/>
+                    </Grid>
+
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="ButtonSizeType" Value="Custom">
+                            <Setter Property="Width" Value="{Binding RelativeSource={RelativeSource AncestorType=Decorator},Path=Width}"/>
+                            <Setter Property="Height" Value="{Binding RelativeSource={RelativeSource AncestorType=Decorator},Path=Height}"/>
+                        </Trigger>
+                        <Trigger Property="ButtonSizeType" Value="Small">
+                            <Setter Property="Width" Value="80"/>
+                            <Setter Property="Height" Value="25"/>
+                            <Setter TargetName="PART_ContentButton" Property="FontSize" Value="10"/>
+                        </Trigger>
+                        <Trigger Property="ButtonSizeType" Value="Default">
+                            <Setter Property="Width" Value="100"/>
+                            <Setter Property="Height" Value="35"/>
+                            <Setter TargetName="PART_ContentButton" Property="FontSize" Value="12"/>
+                        </Trigger>
+                        <Trigger Property="ButtonSizeType" Value="Large">
+                            <Setter Property="Width" Value="150"/>
+                            <Setter Property="Height" Value="40"/>
+                            <Setter TargetName="PART_ContentButton" Property="FontSize" Value="15"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="UCSepButton.MenuItem" TargetType="{x:Type MenuItem}">
+        <Setter Property="HorizontalContentAlignment" Value="Left"/>
+        <Setter Property="Padding" Value="10"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type MenuItem}">
+                    <Border x:Name="templateRoot"
+                                    BorderBrush="{TemplateBinding BorderBrush}" 
+                                    BorderThickness="{TemplateBinding BorderThickness}" 
+                                    Background="{TemplateBinding Background}" 
+                                    SnapsToDevicePixels="True">
+                        <ContentPresenter ContentTemplate="{TemplateBinding HeaderTemplate}" Content="{TemplateBinding Header}"
+                                                  HorizontalAlignment="{TemplateBinding HorizontalContentAlignment}"
+                                                  Grid.Column="1" ContentStringFormat="{TemplateBinding HeaderStringFormat}" ContentSource="Header" Margin="{TemplateBinding Padding}" RecognizesAccessKey="True" SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger Property="IsHighlighted" Value="True">
+                            <Setter Property="CornerRadius" TargetName="templateRoot" Value="5"/>
+                            <Setter Property="Background" TargetName="templateRoot" Value="#EFF2F3"/>
+                        </Trigger>
+                        <Trigger Property="IsEnabled" Value="False">
+                            <Setter Property="TextElement.Foreground" TargetName="templateRoot" Value="#FF707070"/>
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+
+    <Style x:Key="UCSepButton.ContextMenu" TargetType="{x:Type ContextMenu}">
+        <Setter Property="Background" Value="White"/>
+        <Setter Property="BorderBrush" Value="Gray"/>
+        <Setter Property="BorderThickness" Value="0.5"/>
+        <Setter Property="MinWidth" Value="0"/>
+        <Setter Property="Template">
+            <Setter.Value>
+                <ControlTemplate TargetType="{x:Type ContextMenu}">
+                    <Border Name="ContextMenuBorder" 
+                                CornerRadius="5"
+                                Background="{TemplateBinding Background}"
+                                BorderBrush="{TemplateBinding BorderBrush}"
+                                BorderThickness="{TemplateBinding BorderThickness}">
+                        <ScrollViewer Name="ContextMenuScrollViewer"
+                                          Margin="1,0"
+                                          Style="{DynamicResource {ComponentResourceKey TypeInTargetAssembly={x:Type FrameworkElement}, ResourceId=MenuScrollViewer}}">
+                            <ItemsPresenter Name="ItemsPresenter" Margin="{TemplateBinding Padding}"
+                                                KeyboardNavigation.DirectionalNavigation="Cycle"
+                                                SnapsToDevicePixels="{TemplateBinding SnapsToDevicePixels}"/>
+                        </ScrollViewer>
+                    </Border>
+                    <ControlTemplate.Triggers>
+                        <Trigger SourceName="ContextMenuScrollViewer"
+                                 Property="ScrollViewer.CanContentScroll"
+                                 Value="false" >
+                        </Trigger>
+                    </ControlTemplate.Triggers>
+                </ControlTemplate>
+            </Setter.Value>
+        </Setter>
+    </Style>
+    
 </ResourceDictionary>
