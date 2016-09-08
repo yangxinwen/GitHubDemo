@@ -90,6 +90,8 @@
     <Compile Include="Controls\AutoFilteredComboBox.cs" />
     <Compile Include="Controls\UCBusy.cs" />
     <Compile Include="Controls\UCButton.cs" />
+    <Compile Include="Controls\UCDataGridRow.cs" />
+    <Compile Include="Controls\UCDataGrid.cs" />
     <Compile Include="Controls\UCPager.xaml.cs">
       <DependentUpon>UCPager.xaml</DependentUpon>
     </Compile>
@@ -97,6 +99,7 @@
     <Compile Include="Controls\UCSepButton.cs" />
     <Compile Include="Controls\UCText.cs" />
     <Compile Include="Controls\UCToolTip.cs" />
+    <Compile Include="Converter\ObjectToIntConvert.cs" />
     <Compile Include="DrawRect.xaml.cs">
       <DependentUpon>DrawRect.xaml</DependentUpon>
     </Compile>
@@ -206,6 +209,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="PathDraw\TestCircle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Themes\DataGrid.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

@@ -46,8 +46,11 @@ namespace WPFDemo
 
             //menu.Placement = System.Windows.Controls.Primitives.PlacementMode.Bottom;
             //menu.PlacementTarget = btn;
-            
+
+
         }
+
+
 
         private void Menu_Closed(object sender, RoutedEventArgs e)
         {
@@ -77,8 +80,15 @@ namespace WPFDemo
             //cbx.SelectedValuePath = "Key";
             //cbx.ItemsSource = dic;
 
+            dataGrid.AutoGenerateColumns = false;
+            var list = new List<Student>();
+            list.Add(new Student() { Name = "test1", Sex = "Male", Age = 18, Grade = 69, Detail=new DetailInfo() { Height=170,Weight=130, Address="中国广东省深圳市" } });
+            list.Add(new Student() { Name = "tessdfdddddddddddddt2", Sex = "Female", Age = 20, Grade = 80, Detail = new DetailInfo() { Height = 176, Weight = 120, Address = "中国广东省深圳市" } });
+            list.Add(new Student() { Name = "test3", Sex = "Female", Age = 17, Grade = 99, Detail = new DetailInfo() { Height = 160, Weight = 180, Address = "中国广东省深圳市" } });
+            list.Add(new Student() { Name = "test4", Sex = "Male", Age = 19, Grade = 88, Detail = new DetailInfo() { Height = 175, Weight = 130, Address = "中国广东省深圳市" } });
+            list.Add(new Student() { Name = "test5", Sex = "Male", Age = 18, Grade = 63, Detail = new DetailInfo() { Height = 170, Weight = 200, Address = "中国广东省深圳市" } });
+            dataGrid.ItemsSource = list;
 
-            var style= this.Resources.FindName("testsss") as Style;
         }
 
         private void Window_Closed(object sender, EventArgs e)
@@ -86,41 +96,33 @@ namespace WPFDemo
             //ps.SaveData();
         }
 
-        private void Button_Click(object sender, RoutedEventArgs e)
-        {
-            //menu.HorizontalOffset-=50;
-            //menu.IsOpen = !menu.IsOpen;
-        }
-
-        private void btn_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
-        {
-            //if (menu.IsOpen)
-            //    e.Handled = true;
-            //else
-               
-        }
-
-        private void Button_Click_1(object sender, RoutedEventArgs e)
-        {
-            sepBtn.Items.Add(new MenuItem() {Header="add1" });
-        }
-
-        private void sepBtn_Click(object sender, RoutedEventArgs e)
-        {
-            MessageBox.Show("test");
-        }
-
-        //private void canvas_MouseMove(object sender, MouseEventArgs e)
+        //private void dataGrid_MouseDoubleClick(object sender, MouseButtonEventArgs e)
         //{
-        //    if (e.LeftButton == MouseButtonState.Pressed)
-        //        line.EndPoint = e.GetPosition(canvas);
+        //    var row = dataGrid.ItemContainerGenerator.ContainerFromItem(dataGrid.SelectedItem) as DataGridRow;
+        //    row.DetailsVisibility = Visibility.Visible;
         //}
 
+        private void dataGrid_SelectionChanged(object sender, SelectionChangedEventArgs e)
+        {
+            Debug.WriteLine(dataGrid.SelectedItem);
+        }
+    }
 
+    public class Student
+    {
+        public string Name { get; set; }
+        public string Sex { get; set; }
+        public int Age { get; set; }
+        public double Grade { get; set; }
+        public DetailInfo Detail { get; set; } = new DetailInfo();
 
+    }
 
-
-
+    public class DetailInfo
+    {
+        public double Height { get; set; }
+        public double Weight { get; set; }
+        public string Address { get; set; }
     }
 
 }
