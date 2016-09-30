@@ -87,6 +87,9 @@
     <Compile Include="ContainerTruckDot.xaml.cs">
       <DependentUpon>ContainerTruckDot.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Contents\DataGridDemo.xaml.cs">
+      <DependentUpon>DataGridDemo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AutoFilteredComboBox.cs" />
     <Compile Include="Controls\UCBusy.cs" />
     <Compile Include="Controls\UCButton.cs" />
@@ -134,6 +137,9 @@
     <Compile Include="UCTurnAngle.xaml.cs">
       <DependentUpon>UCTurnAngle.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Contents\MoveElementDemo.xaml.cs">
+      <DependentUpon>MoveElementDemo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="WorkTask.xaml.cs">
       <DependentUpon>WorkTask.xaml</DependentUpon>
     </Compile>
@@ -160,6 +166,10 @@
       <SubType>Designer</SubType>
     </Page>
     <Page Include="ContainerTruck.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Contents\DataGridDemo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
@@ -249,6 +259,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="UCTurnAngle.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Contents\MoveElementDemo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
