@@ -29,6 +29,7 @@
             <TreeViewItem Header="所有demo" IsExpanded="True">
                 <TreeViewItem Header="拖拽控件" Tag="MoveElementDemo"/>
                 <TreeViewItem Header="DataGrid" Tag="DataGridDemo"/>
+                <TreeViewItem Header="ButtonDemo" Tag="ButtonDemo"/>
             </TreeViewItem>
         </TreeView>
         <Border Grid.Column="1" Margin="5" BorderBrush="Gray" BorderThickness="1">

@@ -119,6 +119,9 @@ namespace WPFDemo
                 case "DataGridDemo":
                     ele = new DataGridDemo();
                     break;
+                case "ButtonDemo":
+                    ele = new ButtonDemo();
+                    break;
                 default:
                     break;
             }
