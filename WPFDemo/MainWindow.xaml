@@ -11,24 +11,31 @@
         x:Class="WPFDemo.MainWindow"
         mc:Ignorable="d"
         Closed="Window_Closed"
-        Title="MainWindow">  
+        Title="MainWindow">
+    <Window.Resources>
+        <Style TargetType="TreeViewItem">
+            <Setter Property="Padding" Value="5"/>
+        </Style>
+    </Window.Resources>
     <Grid>
         <Grid.ColumnDefinitions>
-            <ColumnDefinition Width="auto"/>
+            <ColumnDefinition  Width="120"/>
             <ColumnDefinition/>
         </Grid.ColumnDefinitions>
         
         <TreeView x:Name="tv"
                
-            Margin="5" Width="100" SelectedItemChanged="TreeView_SelectedItemChanged" MouseLeftButtonUp="TreeView_MouseLeftButtonUp">
+            Margin="5" SelectedItemChanged="TreeView_SelectedItemChanged" MouseLeftButtonUp="TreeView_MouseLeftButtonUp">
             <TreeViewItem Header="所有demo" IsExpanded="True">
                 <TreeViewItem Header="拖拽控件" Tag="MoveElementDemo"/>
                 <TreeViewItem Header="DataGrid" Tag="DataGridDemo"/>
             </TreeViewItem>
         </TreeView>
-        <Border Grid.Column="1" Margin="5" BorderBrush="Black" BorderThickness="1">
+        <Border Grid.Column="1" Margin="5" BorderBrush="Gray" BorderThickness="1">
             <Grid x:Name="grid"/>
         </Border>
+
+        <GridSplitter Width="2" Grid.Column="0"/>
     </Grid>
 
     
