@@ -204,7 +204,7 @@ namespace WPFDemo.Contents
                     }
                 }
             }
-        }        
+        }
 
         private void Expander_Click(object sender, RoutedEventArgs e)
         {

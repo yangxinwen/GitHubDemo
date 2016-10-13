@@ -93,6 +93,9 @@
     <Compile Include="Contents\DataGridDemo.xaml.cs">
       <DependentUpon>DataGridDemo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Contents\HierarchicalDataTemplateDemo.xaml.cs">
+      <DependentUpon>HierarchicalDataTemplateDemo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Contents\TreeDataGridDemo.xaml.cs">
       <DependentUpon>TreeDataGridDemo.xaml</DependentUpon>
     </Compile>
@@ -186,6 +189,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Contents\DataGridDemo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Contents\HierarchicalDataTemplateDemo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

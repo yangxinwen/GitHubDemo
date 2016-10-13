@@ -125,6 +125,9 @@ namespace WPFDemo
                 case "ButtonDemo":
                     ele = new ButtonDemo();
                     break;
+                case "HierarchicalDataTemplateDemo":
+                    ele = new HierarchicalDataTemplateDemo();
+                    break;
                 default:
                     break;
             }
