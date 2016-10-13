@@ -93,10 +93,14 @@
     <Compile Include="Contents\DataGridDemo.xaml.cs">
       <DependentUpon>DataGridDemo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Contents\TreeDataGridDemo.xaml.cs">
+      <DependentUpon>TreeDataGridDemo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Controls\AutoFilteredComboBox.cs" />
     <Compile Include="Controls\CheckButtonOnOff.xaml.cs">
       <DependentUpon>CheckButtonOnOff.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Controls\DataGridUserColumn.cs" />
     <Compile Include="Controls\UCBusy.cs" />
     <Compile Include="Controls\UCButton.cs" />
     <Compile Include="Controls\UCDataGridRow.cs" />
@@ -108,6 +112,8 @@
     <Compile Include="Controls\UCSepButton.cs" />
     <Compile Include="Controls\UCText.cs" />
     <Compile Include="Controls\UCToolTip.cs" />
+    <Compile Include="Converter\BoolToVisibilityConverter.cs" />
+    <Compile Include="Converter\StringToBoolConvert.cs" />
     <Compile Include="Converter\ObjectToIntConvert.cs" />
     <Compile Include="DrawRect.xaml.cs">
       <DependentUpon>DrawRect.xaml</DependentUpon>
@@ -180,6 +186,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Contents\DataGridDemo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Contents\TreeDataGridDemo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>

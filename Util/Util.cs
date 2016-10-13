@@ -5,6 +5,8 @@ using System.Text;
 using System.Runtime.Serialization.Json;
 using System.IO;
 using System.Windows;
+using System.Windows.Media;
+using System.Windows.Controls;
 
 namespace Util
 {
@@ -89,6 +91,29 @@ namespace Util
             {
                 return default(T);
             }
+        }
+
+        public static T FindVisualChildByName<T>(DependencyObject parent, string name) where T : DependencyObject
+        {
+            if (parent != null)
+            {
+                for (int i = 0; i < VisualTreeHelper.GetChildrenCount(parent); i++)
+                {
+                    var child = VisualTreeHelper.GetChild(parent, i) as DependencyObject;
+                    string controlName = child.GetValue(Control.NameProperty) as string;
+                    if (controlName == name)
+                    {
+                        return child as T;
+                    }
+                    else
+                    {
+                        T result = FindVisualChildByName<T>(child, name);
+                        if (result != null)
+                            return result;
+                    }
+                }
+            }
+            return null;
         }
 
     }
