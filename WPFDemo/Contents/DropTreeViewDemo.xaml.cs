@@ -16,26 +16,33 @@ using WPFDemo.Model;
 namespace WPFDemo.Contents
 {
     /// <summary>
-    /// HierarchicalDataTemplateDemo.xaml 的交互逻辑
+    /// DropTreeViewDemo.xaml 的交互逻辑
     /// </summary>
-    public partial class HierarchicalDataTemplateDemo : UserControl
+    public partial class DropTreeViewDemo : UserControl
     {
-        public HierarchicalDataTemplateDemo()
+        public DropTreeViewDemo()
         {
             InitializeComponent();
+            InitData();
+        }
 
-            List<Person> list = new  List<Person>();
+
+        private void InitData()
+        {
+            var list = new System.Collections.ObjectModel.ObservableCollection<Person>();
             list.Add(new Person() { Name = "test1" });
 
             var person = new Person();
             person.Name = "test2";
             list[0].Childs.Add(person);
             person.Childs.Add(new Person() { Name = "test3" });
+            person.Childs.Add(new Person() { Name = "test4" });
+            person = new Person();
+            person.Name = "test5";
+            list[0].Childs.Add(person);
 
 
             treeView.ItemsSource = list;
-
-
         }
     }
 }

@@ -32,6 +32,7 @@
                 <TreeViewItem Header="ButtonDemo" Tag="ButtonDemo"/>
                 <TreeViewItem Header="TreeDataGridDemo" Tag="TreeDataGridDemo"/>
                 <TreeViewItem Header="HierarchicalDataTemplateDemo" Tag="HierarchicalDataTemplateDemo"/>
+                <TreeViewItem Header="DropTreeViewDemo" Tag="DropTreeViewDemo"/>
             </TreeViewItem>
         </TreeView>
         <Border Grid.Column="1" Margin="5" BorderBrush="Gray" BorderThickness="1">

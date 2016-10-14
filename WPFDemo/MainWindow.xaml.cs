@@ -128,6 +128,9 @@ namespace WPFDemo
                 case "HierarchicalDataTemplateDemo":
                     ele = new HierarchicalDataTemplateDemo();
                     break;
+                case "DropTreeViewDemo":
+                    ele = new DropTreeViewDemo();
+                    break;
                 default:
                     break;
             }

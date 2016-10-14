@@ -93,6 +93,9 @@
     <Compile Include="Contents\DataGridDemo.xaml.cs">
       <DependentUpon>DataGridDemo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Contents\DropTreeViewDemo.xaml.cs">
+      <DependentUpon>DropTreeViewDemo.xaml</DependentUpon>
+    </Compile>
     <Compile Include="Contents\HierarchicalDataTemplateDemo.xaml.cs">
       <DependentUpon>HierarchicalDataTemplateDemo.xaml</DependentUpon>
     </Compile>
@@ -104,6 +107,7 @@
       <DependentUpon>CheckButtonOnOff.xaml</DependentUpon>
     </Compile>
     <Compile Include="Controls\DataGridUserColumn.cs" />
+    <Compile Include="Controls\DragTreeView.cs" />
     <Compile Include="Controls\UCBusy.cs" />
     <Compile Include="Controls\UCButton.cs" />
     <Compile Include="Controls\UCDataGridRow.cs" />
@@ -122,6 +126,8 @@
       <DependentUpon>DrawRect.xaml</DependentUpon>
     </Compile>
     <Compile Include="Enums.cs" />
+    <Compile Include="Model\IDropable.cs" />
+    <Compile Include="Model\Person.cs" />
     <Compile Include="MulCombox.xaml.cs">
       <DependentUpon>MulCombox.xaml</DependentUpon>
     </Compile>
@@ -155,6 +161,8 @@
     <Compile Include="Contents\MoveElementDemo.xaml.cs">
       <DependentUpon>MoveElementDemo.xaml</DependentUpon>
     </Compile>
+    <Compile Include="Utility\ItemMoveFinishedArgs.cs" />
+    <Compile Include="Utility\UIElementAdorner.cs" />
     <Compile Include="WorkTask.xaml.cs">
       <DependentUpon>WorkTask.xaml</DependentUpon>
     </Compile>
@@ -189,6 +197,10 @@
       <Generator>MSBuild:Compile</Generator>
     </Page>
     <Page Include="Contents\DataGridDemo.xaml">
+      <SubType>Designer</SubType>
+      <Generator>MSBuild:Compile</Generator>
+    </Page>
+    <Page Include="Contents\DropTreeViewDemo.xaml">
       <SubType>Designer</SubType>
       <Generator>MSBuild:Compile</Generator>
     </Page>
