@@ -40,5 +40,10 @@ namespace WPFDemo.Contents
         {
            
         }
+
+        private void Button_MouseLeftButtonDown(object sender, MouseButtonEventArgs e)
+        {
+
+        }
     }
 }
