@@ -36,10 +36,13 @@ namespace WPFDemo.Behavior
         }
 
         private void AssociatedObject_MouseMove(object sender, System.Windows.Input.MouseEventArgs e)
-        {
+        {            
             if (_isDown)
             {
                 var point = e.GetPosition(_canvas);
+
+                System.Diagnostics.Debug.WriteLine(point);
+
                 AssociatedObject.SetValue(Canvas.LeftProperty, point.X);
                 AssociatedObject.SetValue(Canvas.TopProperty, point.Y);
             }

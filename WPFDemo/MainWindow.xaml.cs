@@ -52,7 +52,6 @@ namespace WPFDemo
         }
 
 
-
         private void Menu_Closed(object sender, RoutedEventArgs e)
         {
             Debug.WriteLine("sdfdsf");
